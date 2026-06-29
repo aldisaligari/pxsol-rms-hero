@@ -6,100 +6,145 @@
   <title>RMS para Hoteles - Pxsol</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-    
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0e0720; }
+
+    /* ===== HEADER ===== */
     header {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 1000;
-      background: rgba(20, 10, 40, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(107, 76, 154, 0.2);
+      background: rgba(10, 5, 22, 0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
       padding: 0 40px;
-      height: 70px;
+      height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
     }
-    
-    .logo-container {
-      display: flex;
-      align-items: center;
-      height: 50px;
-    }
-    
-    .logo-container img {
-      height: 100%;
-      width: auto;
-      object-fit: contain;
-    }
-    
+
+    /* Logo SVG */
+    .logo-svg { height: 34px; width: auto; flex-shrink: 0; }
+
+    /* Nav */
     nav {
       display: flex;
-      gap: 48px;
+      gap: 32px;
       align-items: center;
+      flex: 1;
+      justify-content: center;
     }
-    
-    nav a, .nav-globe {
-      color: #d4c5f9;
+    nav a {
+      color: rgba(255,255,255,0.6);
       text-decoration: none;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
-      position: relative;
-      transition: color 0.3s ease;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #fff; }
+
+    /* Globe dropdown */
+    .globe-wrapper { position: relative; flex-shrink: 0; }
+    .globe-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 6px 10px 6px 8px;
       cursor: pointer;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      transition: all 0.2s;
     }
-    
-    nav a::after, .nav-globe::after {
-      content: '';
+    .globe-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .globe-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .globe-chevron {
+      font-size: 9px;
+      opacity: 0.5;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    .globe-wrapper.open .globe-chevron { transform: rotate(180deg); }
+
+    .globe-dropdown {
       position: absolute;
-      bottom: -6px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: #FF3B30;
-      transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.94) translateY(-4px);
+      background: #fff;
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+      min-width: 140px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    
-    nav a:hover, .nav-globe:hover {
-      color: #FF3B30;
-      transform: translateY(-1px);
+    .globe-wrapper.open .globe-dropdown {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(-50%) scale(1) translateY(0);
     }
-    
-    nav a:hover::after, .nav-globe:hover::after {
-      width: 100%;
+    .country-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #222;
+      transition: background 0.12s;
     }
-    
-    .nav-globe {
+    .country-option:hover { background: #f4f4f8; }
+    .country-flag { font-size: 17px; }
+
+    /* Header actions */
+    .header-actions {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 20px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      transition: background 0.3s ease;
+      flex-shrink: 0;
     }
-    
-    .nav-globe:hover {
-      background: rgba(255, 59, 48, 0.1);
-    }
-    
-    .globe-flags {
-      display: flex;
-      gap: 4px;
+    .btn-login {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.8);
+      padding: 8px 18px;
+      border-radius: 8px;
       font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
     }
-    
+    .btn-login:hover { background: rgba(255,255,255,0.07); color: #fff; border-color: rgba(255,255,255,0.3); }
+    .btn-quote {
+      background: #FF3B30;
+      border: none;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-quote:hover { background: #e0352b; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,59,48,0.35); }
+
+    /* ===== HERO ===== */
     .hero {
       position: relative;
       width: 100%;
       min-height: 100vh;
       overflow: hidden;
-      margin-top: 70px;
+      margin-top: 68px;
     }
-    
     .hero-bg {
       position: absolute;
       inset: 0;
@@ -107,661 +152,992 @@
       background-size: cover;
       background-position: center;
     }
-    
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(20, 10, 40, 0.55);
+      background: linear-gradient(120deg,
+        rgba(10, 5, 22, 0.96) 0%,
+        rgba(14, 7, 30, 0.88) 50%,
+        rgba(20, 10, 40, 0.75) 100%
+      );
     }
-    
-    #particles {
-      position: absolute;
-      inset: 0;
-      opacity: 0.8;
-    }
-    
+    #particles { position: absolute; inset: 0; opacity: 0.55; pointer-events: none; }
+
     .hero-content {
       position: relative;
-      height: 100vh;
+      min-height: calc(100vh - 68px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 60px 80px;
-      max-width: 1600px;
+      padding: 72px 80px;
+      max-width: 1440px;
       margin: 0 auto;
-      gap: 80px;
+      gap: 64px;
       z-index: 10;
     }
-    
+
     .hero-left {
       flex: 1;
       min-width: 0;
+      max-width: 540px;
     }
-    
     .hero-right {
-      flex: 1;
+      flex: 1.15;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       min-width: 0;
     }
-    
+
+    /* Badge */
     .badge {
-      display: inline-block;
-      background: rgba(107, 76, 154, 0.2);
-      border: 1px solid rgba(107, 76, 154, 0.5);
-      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,59,48,0.1);
+      border: 1px solid rgba(255,59,48,0.25);
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 11px;
-      color: #d4c5f9;
+      font-size: 10.5px;
+      color: #ff8a82;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-      margin-bottom: 24px;
-      transition: all 0.3s ease;
-    }
-    
-    .badge:hover {
-      background: rgba(107, 76, 154, 0.35);
-      border-color: rgba(107, 76, 154, 0.7);
-    }
-    
-    h1 {
-      font-size: clamp(48px, 7vw, 72px);
+      letter-spacing: 1.5px;
       font-weight: 700;
-      line-height: 1.15;
-      margin: 0 0 28px 0;
+      margin-bottom: 22px;
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: #FF3B30;
+      border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Headline */
+    h1 {
+      font-size: clamp(38px, 5vw, 66px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin: 0 0 20px 0;
       color: #ffffff;
-      letter-spacing: -1px;
-      transition: all 0.3s ease;
+      letter-spacing: -1.5px;
     }
-    
-    h1:hover {
+    h1 em {
+      font-style: normal;
       color: #FF3B30;
-      transform: translateY(-2px);
     }
-    
+
     .subheadline {
-      font-size: 18px;
+      font-size: 16.5px;
       line-height: 1.7;
-      color: #e0d5f0;
-      margin: 0 0 40px 0;
-      max-width: 550px;
-      transition: all 0.3s ease;
+      color: rgba(255,255,255,0.55);
+      margin: 0 0 36px 0;
+      max-width: 480px;
     }
-    
-    .subheadline:hover {
-      color: #f5f0ff;
-    }
-    
+
+    /* ===== BENEFIT CARDS ===== */
     .benefits {
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      margin-bottom: 48px;
+      gap: 10px;
+      margin-bottom: 36px;
     }
-    
-    .benefit-item {
+    .benefit-card {
       display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      transition: all 0.3s ease;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 16px 20px;
       cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
     }
-    
-    .benefit-item:hover .benefit-text {
-      color: #f5f0ff;
+    .benefit-card:hover {
+      background: rgba(255,59,48,0.07);
+      border-color: rgba(255,59,48,0.25);
+      transform: translateX(6px);
+      box-shadow: -4px 0 20px rgba(255,59,48,0.06), 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .benefit-icon {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      background: rgba(255,59,48,0.1);
+      border: 1px solid rgba(255,59,48,0.18);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      transition: all 0.3s;
+    }
+    .benefit-card:hover .benefit-icon {
+      background: rgba(255,59,48,0.18);
+      border-color: rgba(255,59,48,0.35);
+      transform: scale(1.08);
+    }
+    .benefit-body { flex: 1; min-width: 0; }
+    .benefit-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 3px;
+    }
+    .benefit-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+    .benefit-arrow {
+      color: rgba(255,255,255,0.2);
+      font-size: 16px;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .benefit-card:hover .benefit-arrow {
+      color: #FF3B30;
       transform: translateX(4px);
     }
-    
-    .benefit-dot {
-      width: 8px;
-      height: 8px;
-      background: #FF3B30;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 8px;
-      transition: all 0.3s ease;
+
+    /* CTA */
+    .cta-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
     }
-    
-    .benefit-item:hover .benefit-dot {
-      width: 10px;
-      height: 10px;
-      box-shadow: 0 0 12px rgba(255, 59, 48, 0.5);
-    }
-    
-    .benefit-text {
-      margin: 0;
-      color: #d4c5f9;
-      font-size: 15px;
-      line-height: 1.5;
-      transition: all 0.3s ease;
-    }
-    
-    .cta-button {
-      background: #6B4C9A;
-      color: white;
+    .cta-primary {
+      background: #ffffff;
+      color: #6B4C9A;
       border: none;
-      padding: 16px 48px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
+      padding: 15px 38px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 24px rgba(107, 76, 154, 0.3);
-      position: relative;
-      overflow: hidden;
+      transition: all 0.25s;
+      box-shadow: 0 4px 24px rgba(255,255,255,0.08);
+      letter-spacing: -0.2px;
     }
-    
-    .cta-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: #FF3B30;
-      transition: left 0.3s ease;
-      z-index: -1;
+    .cta-primary:hover {
+      background: #f0e8ff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(255,255,255,0.18);
     }
-    
-    .cta-button:hover::before {
-      left: 0;
-    }
-    
-    .cta-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(107, 76, 154, 0.5);
-    }
-    
-    .trust-section {
-      margin-top: 48px;
-      padding-top: 48px;
-      border-top: 1px solid rgba(107, 76, 154, 0.2);
-    }
-    
-    .trust-label {
-      margin: 0 0 12px 0;
-      font-size: 11px;
-      color: #a89bc4;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    
-    .trust-text {
-      margin: 0;
-      color: #d4c5f9;
+    .cta-ghost {
+      color: rgba(255,255,255,0.55);
       font-size: 14px;
-      line-height: 1.6;
-      transition: all 0.3s ease;
-    }
-    
-    .trust-section:hover .trust-text {
-      color: #f5f0ff;
-    }
-    
-    .trust-text strong {
-      color: #ffffff;
-      font-weight: 600;
-    }
-    
-    .trust-stars {
-      color: #ffd700;
-      margin: 0 6px;
-    }
-    
-    .trust-rating {
-      color: #a89bc4;
-    }
-    
-    .laptop-frame {
-      position: relative;
-      width: 100%;
-      max-width: 480px;
-      aspect-ratio: 16 / 10;
-      animation: laptopOpen 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-      transform-origin: bottom center;
-      animation-delay: 0.3s;
-    }
-    
-    @keyframes laptopOpen {
-      from {
-        opacity: 0;
-        transform: scaleY(0.3) rotateX(45deg);
-      }
-      to {
-        opacity: 1;
-        transform: scaleY(1) rotateX(0deg);
-      }
-    }
-    
-    .laptop-screen {
-      position: absolute;
-      inset: 0;
-      background: #ffffff;
-      border-radius: 12px 12px 0 0;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    }
-    
-    .laptop-bezel {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 24px;
-      background: linear-gradient(to bottom, #e0e0e0, #c0c0c0);
-      border-radius: 0 0 16px 16px;
-      z-index: 2;
-    }
-    
-    .dashboard-content {
-      width: 100%;
-      height: 100%;
-      padding: 24px;
-      overflow-y: auto;
-      background: #ffffff;
-    }
-    
-    .dash-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    
-    .dash-title {
-      font-size: 12px;
-      color: #666;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-    
-    .dash-status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: #00cc88;
-      font-weight: 600;
-    }
-    
-    .dash-status::before {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      background: #00cc88;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-    
-    .dash-alert {
-      background: #f3e5ff;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-    
-    .alert-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 4px;
-    }
-    
-    .alert-text {
-      font-size: 11px;
-      color: #666;
-    }
-    
-    .dash-section {
-      margin-bottom: 20px;
-    }
-    
-    .section-label {
-      font-size: 11px;
-      color: #999;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .price-section {
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
+      transition: color 0.2s;
+      background: none;
+      border: none;
+    }
+    .cta-ghost:hover { color: #fff; }
+    .cta-ghost span { transition: transform 0.2s; }
+    .cta-ghost:hover span { transform: translateX(4px); }
+
+    /* Trust bar */
+    .trust-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    .trust-item {
+      padding: 0 28px 0 0;
+      margin-right: 28px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .trust-item:last-child { border-right: none; margin-right: 0; }
+    .trust-num {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .trust-stars { color: #FFD700; font-size: 12px; }
+    .trust-lbl {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 3px;
+    }
+
+    /* ===== DEVICE FRAMES ===== */
+    .devices-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    /* Browser frame */
+    .browser-frame {
+      position: relative;
+      width: 100%;
+      background: #1c1030;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow:
+        0 40px 100px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(255,255,255,0.07),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      animation: deviceIn 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 0.2s both;
+    }
+    @keyframes deviceIn {
+      from { opacity: 0; transform: translateY(28px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .browser-dots { display: flex; gap: 6px; }
+    .bdot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .bdot-r { background: #FF5F57; }
+    .bdot-y { background: #FEBC2E; }
+    .bdot-g { background: #28C840; }
+    .browser-url {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.35);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Dashboard inside browser */
+    .dash {
+      background: #f8f7fc;
+      padding: 18px;
+    }
+
+    .dash-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ece9f5;
+    }
+    .dash-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #888;
+    }
+    .dash-logo-chip {
+      width: 22px;
+      height: 22px;
+      background: #6B4C9A;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 8px;
+      font-weight: 900;
+    }
+    .dash-live {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #00b87a;
+      background: rgba(0,184,122,0.1);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .dash-live-dot {
+      width: 5px;
+      height: 5px;
+      background: #00b87a;
+      border-radius: 50%;
+      animation: blink 1.8s ease-in-out infinite;
+    }
+
+    /* Stats row */
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
       margin-bottom: 12px;
     }
-    
-    .price-old {
-      font-size: 12px;
-      color: #999;
-      text-decoration: line-through;
+    .stat-box {
+      background: #fff;
+      border: 1px solid #ece9f5;
+      border-radius: 10px;
+      padding: 11px 12px;
     }
-    
-    .price-arrow {
-      font-size: 14px;
-      color: #ccc;
+    .stat-lbl {
+      font-size: 9px;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
     }
-    
-    .price-new {
-      font-size: 28px;
-      font-weight: 700;
-      color: #333;
+    .stat-val {
+      font-size: 19px;
+      font-weight: 800;
+      color: #1a1a2e;
       font-family: 'Courier New', monospace;
+      line-height: 1;
     }
-    
-    .price-percent {
-      font-size: 14px;
-      font-weight: 700;
-      color: #00cc88;
-      margin-left: 8px;
-    }
-    
-    .dash-detail {
+    .stat-chg {
       font-size: 10px;
-      color: #666;
-      line-height: 1.4;
+      font-weight: 700;
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .chg-up { color: #00b87a; }
+    .chg-warn { color: #FF3B30; }
+
+    /* Alert */
+    .dash-alert {
+      background: linear-gradient(135deg, #f0e8ff 0%, #ffe8e6 100%);
+      border: 1px solid rgba(107,76,154,0.15);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .alert-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .alert-content { flex: 1; }
+    .alert-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 2px;
+    }
+    .alert-sub {
+      font-size: 10px;
+      color: #888;
+    }
+    .alert-badge {
+      background: #FF3B30;
+      color: #fff;
+      font-size: 8px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+
+    /* Price suggestion */
+    .dash-suggest {
+      background: #fff;
+      border: 1px solid #ece9f5;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .suggest-label {
+      font-size: 9px;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 8px;
     }
-    
-    .dash-buttons {
+    .price-row {
       display: flex;
-      gap: 12px;
-      margin-top: 16px;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
     }
-    
-    .dash-btn {
+    .price-old { font-size: 11px; color: #bbb; text-decoration: line-through; }
+    .price-arr { color: #ccc; }
+    .price-new {
+      font-size: 24px;
+      font-weight: 900;
+      color: #1a1a2e;
+      font-family: 'Courier New', monospace;
+      line-height: 1;
+    }
+    .price-pct {
+      background: rgba(0,184,122,0.1);
+      color: #00b87a;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .suggest-meta {
+      font-size: 9.5px;
+      color: #999;
+      line-height: 1.5;
+    }
+    .suggest-meta strong { color: #444; }
+
+    /* Actions */
+    .dash-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .dbtn {
       flex: 1;
       padding: 10px;
-      border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
+      border: none;
     }
-    
-    .dash-btn-reject {
+    .dbtn-reject {
       background: transparent;
-      border: 1px solid #d0d0d0;
-      color: #333;
+      border: 1px solid #ddd;
+      color: #666;
     }
-    
-    .dash-btn-reject:hover {
-      border-color: #999;
-      background: #f5f5f5;
-    }
-    
-    .dash-btn-approve {
-      background: #333;
+    .dbtn-reject:hover { background: #f5f5f5; border-color: #bbb; }
+    .dbtn-approve {
+      background: #1a1a2e;
       color: #fff;
     }
-    
-    .dash-btn-approve:hover {
+    .dbtn-approve:hover { background: #000; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+    /* ===== PHONE FRAME ===== */
+    .phone-frame {
+      position: absolute;
+      right: -52px;
+      bottom: -28px;
+      width: 164px;
+      background: #0a0518;
+      border-radius: 34px;
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.65),
+        0 0 0 2px rgba(255,59,48,0.45),
+        0 0 0 5px rgba(255,59,48,0.1),
+        0 0 0 6px rgba(0,0,0,0.4),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
+      overflow: hidden;
+      animation: deviceIn 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 0.45s both;
+    }
+    .phone-island {
+      height: 26px;
+      background: #0a0518;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .phone-pill {
+      width: 62px;
+      height: 14px;
       background: #000;
-      transform: translateY(-1px);
+      border-radius: 10px;
     }
-    
+    .phone-screen {
+      background: #fff;
+      margin: 0 3px;
+      padding: 10px;
+      min-height: 272px;
+    }
+    .phone-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 9px;
+    }
+    .phone-time { font-size: 9px; font-weight: 800; color: #111; }
+    .phone-icons { font-size: 7px; color: #666; letter-spacing: 1px; }
+
+    /* Phone notification */
+    .phone-notif {
+      background: linear-gradient(135deg, #f0e8ff, #fff4f3);
+      border-radius: 9px;
+      padding: 9px 11px;
+      margin-bottom: 9px;
+      border-left: 3px solid #6B4C9A;
+    }
+    .pn-app {
+      font-size: 8px;
+      font-weight: 700;
+      color: #6B4C9A;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .pn-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 2px;
+    }
+    .pn-text {
+      font-size: 9px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    /* Mini chart */
+    .phone-chart {
+      background: #f8f7fc;
+      border-radius: 9px;
+      padding: 8px 10px 4px;
+      margin-bottom: 9px;
+      height: 72px;
+      position: relative;
+      overflow: hidden;
+    }
+    .chart-label {
+      font-size: 7.5px;
+      color: #bbb;
+      position: absolute;
+      top: 6px;
+      left: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3.5px;
+      height: 100%;
+      padding-top: 16px;
+    }
+    .bar {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      background: linear-gradient(to top, #c8b8e8, #d4c5f9);
+    }
+    .bar.hot {
+      background: linear-gradient(to top, #FF3B30, #ff7b73);
+      position: relative;
+    }
+    .bar.hot::after {
+      content: '↑';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      color: #FF3B30;
+      font-weight: 900;
+    }
+
+    /* Phone actions */
+    .phone-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .pa-btn {
+      flex: 1;
+      padding: 7px 4px;
+      border-radius: 7px;
+      font-size: 9px;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+    }
+    .pa-reject { background: #f0eef8; color: #888; }
+    .pa-approve { background: #1a1a2e; color: #fff; }
+
+    .phone-home-bar {
+      height: 22px;
+      background: #0a0518;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 3px 3px 0;
+      border-radius: 0 0 3px 3px;
+    }
+    .home-line {
+      width: 44px;
+      height: 3px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 2px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1200px) {
+      header { padding: 0 28px; }
+      nav { gap: 24px; }
+      .hero-content { padding: 60px 48px; gap: 48px; }
+      .devices-wrapper { max-width: 480px; }
+    }
+
     @media (max-width: 1024px) {
-      header { padding: 0 30px; }
-      nav { gap: 32px; }
-      nav a, .nav-globe { font-size: 15px; }
-      .hero-content { flex-direction: column; padding: 60px 40px; gap: 40px; }
-      h1 { font-size: 42px; }
-      .subheadline { font-size: 16px; }
-      .laptop-frame { max-width: 380px; }
+      nav a:nth-child(n+4) { display: none; }
     }
-    
-    @media (max-width: 768px) {
-      header {
-        padding: 0 20px;
-        height: 60px;
-      }
-      
-      .logo-container {
-        height: 40px;
-      }
-      
-      nav {
-        gap: 20px;
-      }
-      
-      nav a, .nav-globe {
-        font-size: 14px;
-      }
-      
-      .hero {
-        margin-top: 60px;
-      }
-      
-      .hero-content {
-        flex-direction: column;
-        padding: 40px 20px;
-        gap: 30px;
-        height: auto;
-      }
-      
-      h1 { font-size: 32px; margin-bottom: 16px; }
-      .subheadline { font-size: 15px; margin-bottom: 28px; }
-      .benefits { gap: 14px; margin-bottom: 32px; }
-      .cta-button { padding: 14px 36px; font-size: 15px; }
-      .trust-section { margin-top: 32px; padding-top: 32px; }
-      .laptop-frame { max-width: 100%; }
+
+    @media (max-width: 860px) {
+      nav { display: none; }
+      .hero-content { flex-direction: column; padding: 48px 32px 80px; gap: 56px; min-height: unset; }
+      .hero-left { max-width: 100%; }
+      .hero-right { justify-content: center; width: 100%; }
+      h1 { font-size: 40px; }
+      .devices-wrapper { max-width: 420px; }
+      .phone-frame { right: -24px; bottom: -18px; width: 140px; }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 0 16px; height: 60px; }
+      .btn-login { display: none; }
+      .hero { margin-top: 60px; }
+      .hero-content { padding: 40px 20px 72px; gap: 48px; }
+      h1 { font-size: 34px; letter-spacing: -1px; }
+      .subheadline { font-size: 15px; }
+      .devices-wrapper { max-width: 100%; }
+      .phone-frame { right: -12px; width: 124px; }
+      .trust-bar { gap: 16px; }
+      .trust-item { border-right: none; padding-right: 0; margin-right: 0; }
+      .dash-stats { grid-template-columns: repeat(2, 1fr); }
+      .dash-stats .stat-box:last-child { display: none; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ===== HEADER ===== -->
   <header>
-    <div class="logo-container">
-      <img src="data:image/webp;base64,UklGRoyRAABXRUJQVlA4IICRAADwJgSdASrECbgEPkkkkUYioiGhIRZ4iFAJCWlu+ErH/w4r/uC9nHL1s+PDHt+L5T1kv+V6R/gP+A/4D6ivGq9Y7wj/AeXl7A/4D/gP6K+arwjpP+A/4D+gv4DtV4x3hHSf8B/wH9BfwHdBewP+A/oL2B/QH9BfwHdBfwH9BdwP6C9gfoL+A/4H9A+ov5DtV4R3gP6C9gf4D+gv4D+gv4H9BfwH9BfwP6D+A/4L+B/QX4H9BfwP+C9gf4L+D/AP4L+D/gP+D+A/4L+D/AP4H9H9A/QfoL+D/gP8F/B/wX8D+gP4H+B/Qf4H/Bf0X8H9BfxXwH8F/BfwX8H/Be0P+B/Qf4H/BfwP+H9B+wP+H/B/Qf+D/hfxf4H+H+i/gv4v4D/C/ovYH9A/xXwX8D/hf4v6L+B/wP+H/B/Qf8H/D/g/4b+H/D/hPx/wv8r+v+G/r+i/w/o/wv9f8P+f0H/X+D/H/D/hv6/of8v8H+B/wv8X8D/D/j/Bf7/Av9/gP8v4P8X+P+H/P8F+f8L8v8P+f8P8v8f+v8X+f8f8v8/5P8/5P//gf//gPz/gfz/gfz/gPz/gfz/hfz/Qf7/hfz/D/n/X8j/X8j/v4D/f8L+fxHy/5+Q/78h//8D+f8H+f8P8v8/5P8/5P//gPz/h/z/X8j/X8j/f4H//4L8/wf5/w/y/x/y/z+Q//8h//8h/wfyvwDy/x/yf0H+fwf5P0D+/4H8/xfk/w/k/w/k/wP5//8F+f8P+f8f8v8f8v9/yP9/yP+/kP//QP7/QP7/gPz/hfz/hfz/g/z/D/n/X8j/v5D//wP5/wfyf4D8/wfyf4D8/wfyfwP5/wPy/wP5/wPz/5+Q/z+Q/z+Q/z+Q/z+Q/z+Q/z+Q/3+Q/3+Q/wP5/wP5/w/5Pwfk/w/k/3/I/z/k/3/I/z/k/z/k/3/I/z+Q/7+Q/7+Q/38h/3+R///I//+R/7+Q/79QxP9/kf//Rf7/F/n/X+T/f1H+/xf5/1+Q/1+Q/38h/1+R/6+Q/3+R/79Q+f9v5P9vkf+/Rf7/DvL/t5D/f4P8/w/I/9+h/P8P5P9vUf7/B/L/P1D+/wH8/z/k/7/I/78D+f9/I/9/C/n/1/T+/z3k/9+m/P8d5P+/Tf7/HfL/b1P+/w7y/2+j/P8d5P/fRvn/O8j/f5v8/1vk/7+N/P/XyP9/HeT/v03+/x3y/t9G/v8d5P/fRvn/t5H//zby/t9G/v9r5P+/jfz/1/H+/xr5/2+j/P8a+f9vIP//LeT/v0X+/28h//8t5P+/hfz/28j/fxv5/28j//8W8v/fQv7/rZH//wH8/7eQ//8G8v8/I///A/L/PyH/f0L+/yD8/yfk/z+Q/z+Q/z8g/z9A/v+E/P8J+f8f5P+/Qf7/N8j/f4X8/zeQ/v8V8v9fIf3/K+T+/wvy/n+F3P9fIff/L8j9/wtw/3+F/P8L8v9fgfv/V8j9/wvk/r8g9//n4f6/Asz/f0Hu/98g9/8tyP3/O3L//xq4/68h9/9vkfv/d8j9/zfk/n+f3P+/Tc7//wH5/z+Q8/97cP+/Buz+/w+4/z8E9/+/A/f/PwH3/z8D9/8/A+7/fwPu/78C7v9/Bu7/fwLu/38C7v//AHj//wlw/v8vwP1/XMD9f1jA+/+IgPf/sYD3/1EB7/+jAt7/RwW8/48KeP8fFfD+Pyrg/X9UwPv/qID3/1EB7/+jAt7/RwW8/o8KuP8/LuD+/2cF7v8/LOD1f17A+/8DAtz//1iA+/+QAPf/jwS4/w8FuP8PCnD/HxLg/j8kwP1/SIH7/6EB7v9DAvz/jwSY//9IgPv/4QH3/yMG7v9vBbj/LwVo//8vwPv/TYH2/9OC7v+7At7/fwXu/++C3v/fFBziR3f////3+Pn+fPz8/v7/8fH5+vn9/f3//v7+/vz+/v/4+f35/f3+/v79/vn8/v77+/8/v//9/v/8//z4/Pz6/v8DAP//Pz8+P7+/v3+/v3+/v7+///8BAP//vz8+///8/BQAD+9f/58fH5+fr7//vj4/P78+v39/v7+/P39/vz+/v/9+f3+//3+//n9+/P78/v7+/v79/v79/v7+/v/9+/v78/v78/v/+/f/1+fv78/v/8+fP39/f//+/f//9/f/9+f38/Pz+/v/9/v7//vz6+f/7//v/9/v/9/v/9/f/7//f/v/+/v/+/f7+/f7+/v/9/f/+/f7+/v/+/f/9/f/+/v/9/f/+/v/9/f7+/v/+/f/9/f3+/P39/vz+/v7/+/v//vz+//z++v/9/v///vn6+/v/+/f//+/f//+/f//+/v/+/f/+/v7+/v//+/f/+/v/+/v/+/v//vv/+fv/9/f/9+f3+/f/9+/v78/v78/v78/f/9/f/+/f/9+/f/+/f/9+f//+/f+/f/+/v/+/v/+/f/9+/v7+/v7++v3+/v39//8bw==;base64" alt="PXSOL">
-    </div>
+    <!-- PXSOL Logo SVG -->
+    <svg class="logo-svg" viewBox="0 0 248 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <text y="44" font-family="-apple-system,'Arial Black',Arial,sans-serif" font-size="50" font-weight="900" fill="white">P</text>
+      <!-- Red X strokes -->
+      <line x1="42" y1="1" x2="88" y2="51" stroke="#FF3B30" stroke-width="14" stroke-linecap="round"/>
+      <line x1="88" y1="1" x2="42" y2="51" stroke="#FF3B30" stroke-width="14" stroke-linecap="round"/>
+      <text x="96" y="44" font-family="-apple-system,'Arial Black',Arial,sans-serif" font-size="50" font-weight="900" fill="white">SOL</text>
+    </svg>
+
     <nav>
-      <a href="#software">Software para hoteles</a>
-      <a href="#agencias">Software para agencias</a>
-      <a href="#recursos">Recursos</a>
-      <a href="#precios">Precios</a>
-      <a href="#nosotros">Nosotros</a>
-      <div class="nav-globe">
-        🌍
-        <div class="globe-flags">
-          <span>🇦🇷</span>
-          <span>🇨🇴</span>
-          <span>🇨🇱</span>
-          <span>🇲🇽</span>
-          <span>🇺🇾</span>
-          <span>🇵🇪</span>
-        </div>
-      </div>
+      <a href="#">Software para hoteles</a>
+      <a href="#">Software para agencias</a>
+      <a href="#">Recursos</a>
+      <a href="#">Precios</a>
+      <a href="#">Nosotros</a>
     </nav>
+
+    <div class="globe-wrapper" id="globeWrapper">
+      <button class="globe-btn" onclick="toggleGlobe(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span class="globe-chevron">▾</span>
+      </button>
+      <div class="globe-dropdown" id="globeDropdown">
+        <div class="country-option"><span class="country-flag">🇦🇷</span> Argentina</div>
+        <div class="country-option"><span class="country-flag">🇨🇱</span> Chile</div>
+        <div class="country-option"><span class="country-flag">🇨🇴</span> Colombia</div>
+        <div class="country-option"><span class="country-flag">🇲🇽</span> México</div>
+        <div class="country-option"><span class="country-flag">🇺🇾</span> Uruguay</div>
+        <div class="country-option"><span class="country-flag">🇵🇪</span> Perú</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-login">Iniciar sesión</button>
+      <button class="btn-quote">Cotizar</button>
+    </div>
   </header>
 
+  <!-- ===== HERO ===== -->
   <div class="hero">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <canvas id="particles"></canvas>
-    
+
     <div class="hero-content">
+      <!-- LEFT: Copy -->
       <div class="hero-left">
-        <div class="badge">Pricing dinámico IA-first</div>
-        
-        <h1>Menos horas.<br/>Más reservas.</h1>
-        
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Pricing dinámico IA-first
+        </div>
+
+        <h1>Menos horas.<br/><em>Más reservas.</em></h1>
+
         <p class="subheadline">
-          Nuestro RMS analiza demanda y competencia cada día. Te propone el precio exacto dentro de tus límites. Tú solo apruebas.
+          Nuestro RMS analiza demanda y competencia cada día. Te propone el precio exacto dentro de tus límites. Vos solo aprobás.
         </p>
-        
+
         <div class="benefits">
-          <div class="benefit-item">
-            <div class="benefit-dot"></div>
-            <p class="benefit-text">Sin adivinar. La IA te propone, tú decides.</p>
+          <div class="benefit-card">
+            <div class="benefit-icon">🧠</div>
+            <div class="benefit-body">
+              <div class="benefit-title">La IA propone, vos decidís</div>
+              <div class="benefit-desc">Sugerencias con contexto real de mercado. Sin adivinar, sin perder tiempo.</div>
+            </div>
+            <span class="benefit-arrow">→</span>
           </div>
-          <div class="benefit-item">
-            <div class="benefit-dot"></div>
-            <p class="benefit-text">Datos en lugar de intuición. Siempre dentro de tu rango.</p>
+          <div class="benefit-card">
+            <div class="benefit-icon">📊</div>
+            <div class="benefit-body">
+              <div class="benefit-title">Datos, no intuición</div>
+              <div class="benefit-desc">Pickup, set competitivo y demanda analizada cada 24hs. Siempre dentro de tu rango.</div>
+            </div>
+            <span class="benefit-arrow">→</span>
           </div>
-          <div class="benefit-item">
-            <div class="benefit-dot"></div>
-            <p class="benefit-text">Automatización que hace más eficiente tu negocio.</p>
+          <div class="benefit-card">
+            <div class="benefit-icon">⚡</div>
+            <div class="benefit-body">
+              <div class="benefit-title">Sincronización instantánea</div>
+              <div class="benefit-desc">Se actualiza en Booking y Expedia al instante. Tu equipo se enfoca en lo que importa.</div>
+            </div>
+            <span class="benefit-arrow">→</span>
           </div>
         </div>
-        
-        <button class="cta-button">Probar ahora</button>
-        
-        <div class="trust-section">
-          <p class="trust-label">De confianza</p>
-          <p class="trust-text">
-            <strong>+1800 hoteles</strong> sumando más revenue
-            <span class="trust-stars">★★★★★</span> <span class="trust-rating">4.8/5</span>
-          </p>
+
+        <div class="cta-group">
+          <button class="cta-primary">Probar ahora</button>
+          <button class="cta-ghost">Ver demo en vivo <span>→</span></button>
+        </div>
+
+        <div class="trust-bar">
+          <div class="trust-item">
+            <div class="trust-num">+1.800</div>
+            <div class="trust-lbl">Hoteles activos</div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-num">4.8 <span class="trust-stars">★★★★★</span></div>
+            <div class="trust-lbl">Valoración promedio</div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-num">+12%</div>
+            <div class="trust-lbl">Revenue promedio</div>
+          </div>
         </div>
       </div>
-      
+
+      <!-- RIGHT: Devices -->
       <div class="hero-right">
-        <div class="laptop-frame">
-          <div class="laptop-screen">
-            <div class="dashboard-content">
-              <div class="dash-header">
-                <span class="dash-title">pms.pxsol.com / rms</span>
-                <span class="dash-status">EN VIVO</span>
+        <div class="devices-wrapper">
+
+          <!-- Browser / dashboard mockup -->
+          <div class="browser-frame">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <div class="bdot bdot-r"></div>
+                <div class="bdot bdot-y"></div>
+                <div class="bdot bdot-g"></div>
               </div>
-              
-              <div class="dash-section">
-                <div class="section-label">RMS › Agente IA</div>
+              <div class="browser-url">
+                <span>🔒</span>
+                <span>pms.pxsol.com / rms</span>
               </div>
-              
-              <div class="dash-alert">
-                <div class="alert-title">⚡ Demanda detectada</div>
-                <div class="alert-text">pickup +24% vs histórico, set comp. +8%</div>
-              </div>
-              
-              <div class="dash-section">
-                <div class="section-label">Sugerencia › Tarifa estándar</div>
-                
-                <div class="price-section">
-                  <span class="price-old">ARS 96.000</span>
-                  <span class="price-arrow">→</span>
-                  <span class="price-new" id="price-anim">ARS 104.190</span>
-                  <span class="price-percent" id="percent-anim">+8.5%</span>
+            </div>
+
+            <div class="dash">
+              <!-- Top bar -->
+              <div class="dash-topbar">
+                <div class="dash-brand">
+                  <div class="dash-logo-chip">PX</div>
+                  RMS · Agente IA
+                </div>
+                <div class="dash-live">
+                  <div class="dash-live-dot"></div>
+                  EN VIVO
                 </div>
               </div>
-              
-              <div class="dash-section">
-                <div class="dash-detail">Demanda 25% sobre histórico. Tu tarifa quedaría 4% bajo el promedio del set. Margen estimado: <strong>+ARS 384k</strong></div>
-                <div class="dash-detail" style="font-size: 9px; color: #999;">Aplicado a 3 fechas · sincronizado a Booking y Expedia</div>
+
+              <!-- Stats -->
+              <div class="dash-stats">
+                <div class="stat-box">
+                  <div class="stat-lbl">Pickup hoy</div>
+                  <div class="stat-val">+24%</div>
+                  <div class="stat-chg chg-up">↑ vs histórico</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-lbl">Set comp.</div>
+                  <div class="stat-val">+8%</div>
+                  <div class="stat-chg chg-up">↑ vs ayer</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-lbl">Oport. abiertas</div>
+                  <div class="stat-val">3</div>
+                  <div class="stat-chg chg-warn">fechas pendientes</div>
+                </div>
               </div>
-              
-              <div class="dash-buttons">
-                <button class="dash-btn dash-btn-reject">Rechazar</button>
-                <button class="dash-btn dash-btn-approve">Aprobar</button>
+
+              <!-- Alert -->
+              <div class="dash-alert">
+                <div class="alert-icon">⚡</div>
+                <div class="alert-content">
+                  <div class="alert-title">Demanda detectada</div>
+                  <div class="alert-sub">pickup +24% vs histórico · set comp. +8%</div>
+                </div>
+                <div class="alert-badge">NUEVO</div>
+              </div>
+
+              <!-- Price suggestion -->
+              <div class="dash-suggest">
+                <div class="suggest-label">Sugerencia › Tarifa estándar · Sáb 14 dic</div>
+                <div class="price-row">
+                  <span class="price-old">ARS 96.000</span>
+                  <span class="price-arr">→</span>
+                  <span class="price-new" id="price-anim">ARS 104.190</span>
+                  <span class="price-pct" id="percent-anim">+8.5%</span>
+                </div>
+                <div class="suggest-meta">
+                  Demanda 25% sobre histórico · Tu tarifa queda 4% bajo el promedio del set ·
+                  Margen estimado: <strong>+ARS 384k</strong> · Aplicado a 3 fechas
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="dash-btns">
+                <button class="dbtn dbtn-reject">Rechazar</button>
+                <button class="dbtn dbtn-approve">✓ Aprobar sugerencia</button>
               </div>
             </div>
           </div>
-          <div class="laptop-bezel"></div>
+
+          <!-- Phone frame -->
+          <div class="phone-frame">
+            <div class="phone-island">
+              <div class="phone-pill"></div>
+            </div>
+            <div class="phone-screen">
+              <div class="phone-status">
+                <span class="phone-time">9:41</span>
+                <span class="phone-icons">▌▌▌ WiFi ▓</span>
+              </div>
+
+              <div class="phone-notif">
+                <div class="pn-app">PXSOL RMS</div>
+                <div class="pn-title">⚡ Nueva sugerencia</div>
+                <div class="pn-text">Sáb 14 dic · Pickup +24% · Subir a ARS 104.190</div>
+              </div>
+
+              <div class="phone-chart">
+                <span class="chart-label">Revenue / semana</span>
+                <div class="bars">
+                  <div class="bar" style="height:38%"></div>
+                  <div class="bar" style="height:52%"></div>
+                  <div class="bar" style="height:44%"></div>
+                  <div class="bar" style="height:66%"></div>
+                  <div class="bar hot" style="height:92%"></div>
+                  <div class="bar" style="height:60%"></div>
+                  <div class="bar" style="height:70%"></div>
+                </div>
+              </div>
+
+              <div class="phone-actions">
+                <button class="pa-btn pa-reject">Rechazar</button>
+                <button class="pa-btn pa-approve">✓ Aprobar</button>
+              </div>
+            </div>
+            <div class="phone-home-bar">
+              <div class="home-line"></div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    // Globe dropdown
+    function toggleGlobe(e) {
+      e.stopPropagation();
+      document.getElementById('globeWrapper').classList.toggle('open');
+    }
+    document.addEventListener('click', function() {
+      document.getElementById('globeWrapper').classList.remove('open');
+    });
+
+    // Particles
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
-
-    function resizeCanvas() {
+    function resize() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    resize();
+    window.addEventListener('resize', resize);
 
-    const particles = [];
-    const particleCount = 50;
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.08;
-        this.vy = (Math.random() - 0.5) * 0.03;
-        this.size = Math.random() * 2 + 0.8;
-        this.opacity = Math.random() * 0.5 + 0.1;
-        this.maxOpacity = this.opacity;
-      }
-      
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
-        
-        this.opacity += (Math.random() - 0.5) * 0.008;
-        this.opacity = Math.max(0.05, Math.min(this.maxOpacity, this.opacity));
-      }
-      
-      draw() {
-        ctx.fillStyle = `rgba(255, 195, 113, ${this.opacity})`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
+    const pts = [];
+    for (let i = 0; i < 45; i++) {
+      pts.push({
+        x: Math.random() * innerWidth,
+        y: Math.random() * innerHeight,
+        vx: (Math.random() - 0.5) * 0.05,
+        vy: (Math.random() - 0.5) * 0.04,
+        r: Math.random() * 1.6 + 0.4,
+        o: Math.random() * 0.35 + 0.05,
+        mo: 0
       });
-      requestAnimationFrame(animate);
     }
+    pts.forEach(p => p.mo = p.o);
 
-    animate();
-
-    const priceElement = document.getElementById('price-anim');
-    const percentElement = document.getElementById('percent-anim');
-
-    function animatePrice() {
-      const progress = (Date.now() % 12000) / 12000;
-      
-      let easeProgress;
-      if (progress < 0.4) {
-        easeProgress = (progress / 0.4) * (progress / 0.4) * 0.6;
-      } else if (progress < 0.6) {
-        easeProgress = 0.6 + ((progress - 0.4) / 0.2) * 0.35;
-      } else {
-        const remaining = (progress - 0.6) / 0.4;
-        easeProgress = 0.95 - (remaining * remaining) * 0.2;
-      }
-      
-      const basePrice = 96000;
-      const maxPrice = 112000;
-      const displayPrice = Math.round(basePrice + (maxPrice - basePrice) * easeProgress);
-      const percent = ((displayPrice - basePrice) / basePrice * 100).toFixed(1);
-      
-      priceElement.textContent = `ARS ${displayPrice.toLocaleString('es-AR')}`;
-      percentElement.textContent = `+${percent}%`;
-      
-      requestAnimationFrame(animatePrice);
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        p.o += (Math.random() - 0.5) * 0.005;
+        p.o = Math.max(0.02, Math.min(p.mo, p.o));
+        ctx.fillStyle = `rgba(180, 160, 240, ${p.o})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
     }
+    draw();
 
-    animatePrice();
+    // Price animation
+    const priceEl = document.getElementById('price-anim');
+    const pctEl = document.getElementById('percent-anim');
+
+    function animPrice() {
+      const t = (Date.now() % 12000) / 12000;
+      let ep;
+      if (t < 0.4) ep = (t / 0.4) ** 2 * 0.6;
+      else if (t < 0.6) ep = 0.6 + ((t - 0.4) / 0.2) * 0.35;
+      else { const r = (t - 0.6) / 0.4; ep = 0.95 - r * r * 0.2; }
+
+      const base = 96000, max = 112000;
+      const price = Math.round(base + (max - base) * ep);
+      const pct = ((price - base) / base * 100).toFixed(1);
+      priceEl.textContent = `ARS ${price.toLocaleString('es-AR')}`;
+      pctEl.textContent = `+${pct}%`;
+      requestAnimationFrame(animPrice);
+    }
+    animPrice();
   </script>
 </body>
 </html>
