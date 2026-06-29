@@ -24,58 +24,72 @@
       justify-content: space-between;
     }
     
-    .logo {
-      font-size: 24px;
-      font-weight: 700;
-      color: #ffffff;
+    .logo-container {
       display: flex;
       align-items: center;
-      gap: 4px;
-      letter-spacing: -0.5px;
+      height: 50px;
     }
     
-    .logo-x { color: #FF7A3D; }
+    .logo-container img {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+    }
     
     nav {
       display: flex;
-      gap: 32px;
+      gap: 48px;
       align-items: center;
     }
     
-    nav a {
+    nav a, .nav-globe {
       color: #d4c5f9;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 500;
       position: relative;
       transition: color 0.3s ease;
+      cursor: pointer;
     }
     
-    nav a::after {
+    nav a::after, .nav-globe::after {
       content: '';
       position: absolute;
-      bottom: -4px;
+      bottom: -6px;
       left: 0;
       width: 0;
       height: 2px;
-      background: #FF7A3D;
-      transition: width 0.3s ease;
+      background: #FF3B30;
+      transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     
-    nav a:hover {
-      color: #FF7A3D;
+    nav a:hover, .nav-globe:hover {
+      color: #FF3B30;
+      transform: translateY(-1px);
     }
     
-    nav a:hover::after {
+    nav a:hover::after, .nav-globe:hover::after {
       width: 100%;
     }
     
-    .nav-dropdown {
-      position: relative;
+    .nav-globe {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      transition: background 0.3s ease;
     }
     
-    .nav-dropdown:hover > a::after {
-      width: 100%;
+    .nav-globe:hover {
+      background: rgba(255, 59, 48, 0.1);
+    }
+    
+    .globe-flags {
+      display: flex;
+      gap: 4px;
+      font-size: 14px;
     }
     
     .hero {
@@ -125,7 +139,7 @@
     }
     
     .hero-right {
-      flex: 0.9;
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -163,7 +177,7 @@
     }
     
     h1:hover {
-      color: #FF7A3D;
+      color: #FF3B30;
       transform: translateY(-2px);
     }
     
@@ -203,7 +217,7 @@
     .benefit-dot {
       width: 8px;
       height: 8px;
-      background: #FF7A3D;
+      background: #FF3B30;
       border-radius: 50%;
       flex-shrink: 0;
       margin-top: 8px;
@@ -213,7 +227,7 @@
     .benefit-item:hover .benefit-dot {
       width: 10px;
       height: 10px;
-      box-shadow: 0 0 12px rgba(255, 122, 61, 0.5);
+      box-shadow: 0 0 12px rgba(255, 59, 48, 0.5);
     }
     
     .benefit-text {
@@ -246,7 +260,7 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: #FF7A3D;
+      background: #FF3B30;
       transition: left 0.3s ease;
       z-index: -1;
     }
@@ -302,26 +316,211 @@
       color: #a89bc4;
     }
     
-    .dashboard-svg {
+    .laptop-frame {
+      position: relative;
       width: 100%;
-      max-width: 420px;
-      height: auto;
-      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.5));
-      transition: all 0.4s ease;
+      max-width: 480px;
+      aspect-ratio: 16 / 10;
+      animation: laptopOpen 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      transform-origin: bottom center;
+      animation-delay: 0.3s;
     }
     
-    .dashboard-svg:hover {
-      transform: translateY(-8px);
+    @keyframes laptopOpen {
+      from {
+        opacity: 0;
+        transform: scaleY(0.3) rotateX(45deg);
+      }
+      to {
+        opacity: 1;
+        transform: scaleY(1) rotateX(0deg);
+      }
+    }
+    
+    .laptop-screen {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    
+    .laptop-bezel {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: linear-gradient(to bottom, #e0e0e0, #c0c0c0);
+      border-radius: 0 0 16px 16px;
+      z-index: 2;
+    }
+    
+    .dashboard-content {
+      width: 100%;
+      height: 100%;
+      padding: 24px;
+      overflow-y: auto;
+      background: #ffffff;
+    }
+    
+    .dash-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .dash-title {
+      font-size: 12px;
+      color: #666;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    .dash-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #00cc88;
+      font-weight: 600;
+    }
+    
+    .dash-status::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #00cc88;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    
+    .dash-alert {
+      background: #f3e5ff;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .alert-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    
+    .alert-text {
+      font-size: 11px;
+      color: #666;
+    }
+    
+    .dash-section {
+      margin-bottom: 20px;
+    }
+    
+    .section-label {
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .price-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    
+    .price-old {
+      font-size: 12px;
+      color: #999;
+      text-decoration: line-through;
+    }
+    
+    .price-arrow {
+      font-size: 14px;
+      color: #ccc;
+    }
+    
+    .price-new {
+      font-size: 28px;
+      font-weight: 700;
+      color: #333;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .price-percent {
+      font-size: 14px;
+      font-weight: 700;
+      color: #00cc88;
+      margin-left: 8px;
+    }
+    
+    .dash-detail {
+      font-size: 10px;
+      color: #666;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    
+    .dash-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    
+    .dash-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .dash-btn-reject {
+      background: transparent;
+      border: 1px solid #d0d0d0;
+      color: #333;
+    }
+    
+    .dash-btn-reject:hover {
+      border-color: #999;
+      background: #f5f5f5;
+    }
+    
+    .dash-btn-approve {
+      background: #333;
+      color: #fff;
+    }
+    
+    .dash-btn-approve:hover {
+      background: #000;
+      transform: translateY(-1px);
     }
     
     @media (max-width: 1024px) {
       header { padding: 0 30px; }
-      nav { gap: 24px; }
-      nav a { font-size: 13px; }
+      nav { gap: 32px; }
+      nav a, .nav-globe { font-size: 15px; }
       .hero-content { flex-direction: column; padding: 60px 40px; gap: 40px; }
       h1 { font-size: 42px; }
       .subheadline { font-size: 16px; }
-      .dashboard-svg { max-width: 350px; }
+      .laptop-frame { max-width: 380px; }
     }
     
     @media (max-width: 768px) {
@@ -330,9 +529,17 @@
         height: 60px;
       }
       
-      .logo { font-size: 20px; }
-      nav { gap: 16px; }
-      nav a { font-size: 12px; }
+      .logo-container {
+        height: 40px;
+      }
+      
+      nav {
+        gap: 20px;
+      }
+      
+      nav a, .nav-globe {
+        font-size: 14px;
+      }
       
       .hero {
         margin-top: 60px;
@@ -350,27 +557,32 @@
       .benefits { gap: 14px; margin-bottom: 32px; }
       .cta-button { padding: 14px 36px; font-size: 15px; }
       .trust-section { margin-top: 32px; padding-top: 32px; }
-      .dashboard-svg { max-width: 100%; min-width: 280px; }
+      .laptop-frame { max-width: 100%; }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">
-      P<span class="logo-x">X</span>SOL
+    <div class="logo-container">
+      <img src="data:image/webp;base64,UklGRoyRAABXRUJQVlA4IICRAADwJgSdASrECbgEPkkkkUYioiGhIRZ4iFAJCWlu+ErH/w4r/uC9nHL1s+PDHt+L5T1kv+V6R/gP+A/4D6ivGq9Y7wj/AeXl7A/4D/gP6K+arwjpP+A/4D+gv4DtV4x3hHSf8B/wH9BfwHdBewP+A/oL2B/QH9BfwHdBfwH9BdwP6C9gfoL+A/4H9A+ov5DtV4R3gP6C9gf4D+gv4D+gv4H9BfwH9BfwP6D+A/4L+B/QX4H9BfwP+C9gf4L+D/AP4L+D/gP+D+A/4L+D/AP4H9H9A/QfoL+D/gP8F/B/wX8D+gP4H+B/Qf4H/Bf0X8H9BfxXwH8F/BfwX8H/Be0P+B/Qf4H/BfwP+H9B+wP+H/B/Qf+D/hfxf4H+H+i/gv4v4D/C/ovYH9A/xXwX8D/hf4v6L+B/wP+H/B/Qf8H/D/g/4b+H/D/hPx/wv8r+v+G/r+i/w/o/wv9f8P+f0H/X+D/H/D/hv6/of8v8H+B/wv8X8D/D/j/Bf7/Av9/gP8v4P8X+P+H/P8F+f8L8v8P+f8P8v8f+v8X+f8f8v8/5P8/5P//gf//gPz/gfz/gfz/gPz/gfz/hfz/Qf7/hfz/D/n/X8j/X8j/v4D/f8L+fxHy/5+Q/78h//8D+f8H+f8P8v8/5P8/5P//gPz/h/z/X8j/X8j/f4H//4L8/wf5/w/y/x/y/z+Q//8h//8h/wfyvwDy/x/yf0H+fwf5P0D+/4H8/xfk/w/k/w/k/wP5//8F+f8P+f8f8v8f8v9/yP9/yP+/kP//QP7/QP7/gPz/hfz/hfz/g/z/D/n/X8j/v5D//wP5/wfyf4D8/wfyf4D8/wfyfwP5/wPy/wP5/wPz/5+Q/z+Q/z+Q/z+Q/z+Q/z+Q/z+Q/3+Q/3+Q/wP5/wP5/w/5Pwfk/w/k/3/I/z/k/3/I/z/k/z/k/3/I/z+Q/7+Q/7+Q/38h/3+R///I//+R/7+Q/79QxP9/kf//Rf7/F/n/X+T/f1H+/xf5/1+Q/1+Q/38h/1+R/6+Q/3+R/79Q+f9v5P9vkf+/Rf7/DvL/t5D/f4P8/w/I/9+h/P8P5P9vUf7/B/L/P1D+/wH8/z/k/7/I/78D+f9/I/9/C/n/1/T+/z3k/9+m/P8d5P+/Tf7/HfL/b1P+/w7y/2+j/P8d5P/fRvn/O8j/f5v8/1vk/7+N/P/XyP9/HeT/v03+/x3y/t9G/v8d5P/fRvn/t5H//zby/t9G/v9r5P+/jfz/1/H+/xr5/2+j/P8a+f9vIP//LeT/v0X+/28h//8t5P+/hfz/28j/fxv5/28j//8W8v/fQv7/rZH//wH8/7eQ//8G8v8/I///A/L/PyH/f0L+/yD8/yfk/z+Q/z+Q/z8g/z9A/v+E/P8J+f8f5P+/Qf7/N8j/f4X8/zeQ/v8V8v9fIf3/K+T+/wvy/n+F3P9fIff/L8j9/wtw/3+F/P8L8v9fgfv/V8j9/wvk/r8g9//n4f6/Asz/f0Hu/98g9/8tyP3/O3L//xq4/68h9/9vkfv/d8j9/zfk/n+f3P+/Tc7//wH5/z+Q8/97cP+/Buz+/w+4/z8E9/+/A/f/PwH3/z8D9/8/A+7/fwPu/78C7v9/Bu7/fwLu/38C7v//AHj//wlw/v8vwP1/XMD9f1jA+/+IgPf/sYD3/1EB7/+jAt7/RwW8/48KeP8fFfD+Pyrg/X9UwPv/qID3/1EB7/+jAt7/RwW8/o8KuP8/LuD+/2cF7v8/LOD1f17A+/8DAtz//1iA+/+QAPf/jwS4/w8FuP8PCnD/HxLg/j8kwP1/SIH7/6EB7v9DAvz/jwSY//9IgPv/4QH3/yMG7v9vBbj/LwVo//8vwPv/TYH2/9OC7v+7At7/fwXu/++C3v/fFBziR3f////3+Pn+fPz8/v7/8fH5+vn9/f3//v7+/vz+/v/4+f35/f3+/v79/vn8/v77+/8/v//9/v/8//z4/Pz6/v8DAP//Pz8+P7+/v3+/v3+/v7+///8BAP//vz8+///8/BQAD+9f/58fH5+fr7//vj4/P78+v39/v7+/P39/vz+/v/9+f3+//3+//n9+/P78/v7+/v79/v79/v7+/v/9+/v78/v78/v/+/f/1+fv78/v/8+fP39/f//+/f//9/f/9+f38/Pz+/v/9/v7//vz6+f/7//v/9/v/9/v/9/f/7//f/v/+/v/+/f7+/f7+/v/9/f/+/f7+/v/+/f/9/f/+/v/9/f/+/v/9/f7+/v/+/f/9/f3+/P39/vz+/v7/+/v//vz+//z++v/9/v///vn6+/v/+/f//+/f//+/f//+/v/+/f/+/v7+/v//+/f/+/v/+/v/+/v//vv/+fv/9/f/9+f3+/f/9+/v78/v78/v78/f/9/f/+/f/9+/f/+/f/9+f//+/f+/f/+/v/+/v/+/f/9+/v7+/v7++v3+/v39//8bw==;base64" alt="PXSOL">
     </div>
     <nav>
-      <div class="nav-dropdown">
-        <a href="#software">Software para hoteles</a>
-      </div>
-      <div class="nav-dropdown">
-        <a href="#agencias">Software para agencias</a>
-      </div>
-      <div class="nav-dropdown">
-        <a href="#recursos">Recursos</a>
-      </div>
+      <a href="#software">Software para hoteles</a>
+      <a href="#agencias">Software para agencias</a>
+      <a href="#recursos">Recursos</a>
       <a href="#precios">Precios</a>
       <a href="#nosotros">Nosotros</a>
+      <div class="nav-globe">
+        🌍
+        <div class="globe-flags">
+          <span>🇦🇷</span>
+          <span>🇨🇴</span>
+          <span>🇨🇱</span>
+          <span>🇲🇽</span>
+          <span>🇺🇾</span>
+          <span>🇵🇪</span>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -416,35 +628,47 @@
       </div>
       
       <div class="hero-right">
-        <svg viewBox="0 0 400 520" class="dashboard-svg">
-          <rect x="20" y="20" width="360" height="480" rx="12" fill="#ffffff" opacity="0.97"/>
-          <circle cx="35" cy="45" r="6" fill="#00cc88"/>
-          <text x="50" y="50" font-size="12" font-weight="600" fill="#333">pms.pxsol.com / rms</text>
-          <text x="370" y="50" font-size="10" fill="#00cc88" text-anchor="end" font-weight="600">EN VIVO</text>
-          <line x1="30" y1="65" x2="370" y2="65" stroke="#e0e0e0" stroke-width="0.5"/>
-          <text x="35" y="90" font-size="13" font-weight="600" fill="#333">RMS › Agente IA</text>
-          <text x="370" y="90" font-size="10" fill="#6B4C9A" text-anchor="end" font-weight="500">15-17 may</text>
-          <rect x="35" y="105" width="330" height="75" rx="8" fill="#f3e5ff"/>
-          <circle cx="60" cy="135" r="18" fill="#6B4C9A"/>
-          <text x="60" y="142" font-size="24" fill="#fff" text-anchor="middle" font-weight="600">⚡</text>
-          <text x="90" y="128" font-size="13" font-weight="700" fill="#1a1a1a">Demanda detectada</text>
-          <text x="90" y="145" font-size="11" fill="#666">pickup +24% vs histórico, set comp. +8%</text>
-          <text x="365" y="142" font-size="10" fill="#999" text-anchor="end">Hace 5 min</text>
-          <text x="35" y="210" font-size="11" fill="#999">Sugerencia › Tarifa estándar</text>
-          <text x="370" y="210" font-size="10" fill="#00cc88" text-anchor="end" font-weight="600">Confianza alta</text>
-          <text x="35" y="245" font-size="13" fill="#999">ARS 96.000</text>
-          <text x="90" y="245" font-size="14" fill="#ccc">→</text>
-          <text id="price-anim" x="120" y="252" font-size="36" font-weight="700" fill="#1a1a1a">ARS 108.000</text>
-          <text id="percent-anim" x="365" y="245" font-size="15" fill="#00cc88" text-anchor="end" font-weight="700">+12.5%</text>
-          <text x="35" y="295" font-size="10" fill="#666">Demanda 25% sobre histórico. Tu tarifa quedaría</text>
-          <text x="35" y="310" font-size="10" fill="#666">4% bajo el promedio del set. Margen estimado:</text>
-          <text x="35" y="325" font-size="10" fill="#1a1a1a" font-weight="600">+ARS 384k</text>
-          <text x="35" y="350" font-size="9" fill="#999">Aplicado a 3 fechas · sincronizado a Booking y Expedia</text>
-          <rect x="35" y="375" width="150" height="42" rx="6" fill="none" stroke="#d0d0d0" stroke-width="1"/>
-          <text x="110" y="403" font-size="13" fill="#333" text-anchor="middle" font-weight="600">Rechazar</text>
-          <rect x="215" y="375" width="150" height="42" rx="6" fill="#1a1a1a"/>
-          <text x="290" y="403" font-size="13" fill="#fff" text-anchor="middle" font-weight="600">Aprobar</text>
-        </svg>
+        <div class="laptop-frame">
+          <div class="laptop-screen">
+            <div class="dashboard-content">
+              <div class="dash-header">
+                <span class="dash-title">pms.pxsol.com / rms</span>
+                <span class="dash-status">EN VIVO</span>
+              </div>
+              
+              <div class="dash-section">
+                <div class="section-label">RMS › Agente IA</div>
+              </div>
+              
+              <div class="dash-alert">
+                <div class="alert-title">⚡ Demanda detectada</div>
+                <div class="alert-text">pickup +24% vs histórico, set comp. +8%</div>
+              </div>
+              
+              <div class="dash-section">
+                <div class="section-label">Sugerencia › Tarifa estándar</div>
+                
+                <div class="price-section">
+                  <span class="price-old">ARS 96.000</span>
+                  <span class="price-arrow">→</span>
+                  <span class="price-new" id="price-anim">ARS 104.190</span>
+                  <span class="price-percent" id="percent-anim">+8.5%</span>
+                </div>
+              </div>
+              
+              <div class="dash-section">
+                <div class="dash-detail">Demanda 25% sobre histórico. Tu tarifa quedaría 4% bajo el promedio del set. Margen estimado: <strong>+ARS 384k</strong></div>
+                <div class="dash-detail" style="font-size: 9px; color: #999;">Aplicado a 3 fechas · sincronizado a Booking y Expedia</div>
+              </div>
+              
+              <div class="dash-buttons">
+                <button class="dash-btn dash-btn-reject">Rechazar</button>
+                <button class="dash-btn dash-btn-approve">Aprobar</button>
+              </div>
+            </div>
+          </div>
+          <div class="laptop-bezel"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -514,20 +738,22 @@
     const percentElement = document.getElementById('percent-anim');
 
     function animatePrice() {
-      const progress = (Date.now() % 10000) / 10000;
+      const progress = (Date.now() % 12000) / 12000;
       
       let easeProgress;
-      if (progress < 0.3) {
-        easeProgress = (progress / 0.3) * (progress / 0.3) * 0.5;
-      } else if (progress < 0.7) {
-        easeProgress = 0.5 + ((progress - 0.3) / 0.4) * 0.5;
+      if (progress < 0.4) {
+        easeProgress = (progress / 0.4) * (progress / 0.4) * 0.6;
+      } else if (progress < 0.6) {
+        easeProgress = 0.6 + ((progress - 0.4) / 0.2) * 0.35;
       } else {
-        const remaining = (progress - 0.7) / 0.3;
-        easeProgress = 1 - (remaining * remaining) * 0.1;
+        const remaining = (progress - 0.6) / 0.4;
+        easeProgress = 0.95 - (remaining * remaining) * 0.2;
       }
       
-      const displayPrice = Math.round(96000 + (108000 - 96000) * easeProgress);
-      const percent = ((displayPrice - 96000) / 96000 * 100).toFixed(1);
+      const basePrice = 96000;
+      const maxPrice = 112000;
+      const displayPrice = Math.round(basePrice + (maxPrice - basePrice) * easeProgress);
+      const percent = ((displayPrice - basePrice) / basePrice * 100).toFixed(1);
       
       priceElement.textContent = `ARS ${displayPrice.toLocaleString('es-AR')}`;
       percentElement.textContent = `+${percent}%`;
