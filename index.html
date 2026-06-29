@@ -8,11 +8,82 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
     
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(20, 10, 40, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(107, 76, 154, 0.2);
+      padding: 0 40px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      letter-spacing: -0.5px;
+    }
+    
+    .logo-x { color: #FF7A3D; }
+    
+    nav {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    
+    nav a {
+      color: #d4c5f9;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #FF7A3D;
+      transition: width 0.3s ease;
+    }
+    
+    nav a:hover {
+      color: #FF7A3D;
+    }
+    
+    nav a:hover::after {
+      width: 100%;
+    }
+    
+    .nav-dropdown {
+      position: relative;
+    }
+    
+    .nav-dropdown:hover > a::after {
+      width: 100%;
+    }
+    
     .hero {
       position: relative;
       width: 100%;
       min-height: 100vh;
       overflow: hidden;
+      margin-top: 70px;
     }
     
     .hero-bg {
@@ -26,13 +97,13 @@
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(20, 10, 40, 0.4);
+      background: rgba(20, 10, 40, 0.55);
     }
     
     #particles {
       position: absolute;
       inset: 0;
-      opacity: 0.5;
+      opacity: 0.8;
     }
     
     .hero-content {
@@ -41,139 +112,268 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 80px 60px;
-      max-width: 1400px;
+      padding: 60px 80px;
+      max-width: 1600px;
       margin: 0 auto;
-      gap: 60px;
+      gap: 80px;
       z-index: 10;
     }
     
-    .hero-left { flex: 1; min-width: 0; }
-    .hero-right { flex: 1; display: flex; align-items: center; justify-content: center; min-width: 0; }
+    .hero-left {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .hero-right {
+      flex: 0.9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
     
     .badge {
       display: inline-block;
-      background: rgba(147, 112, 219, 0.25);
-      border: 1px solid rgba(147, 112, 219, 0.6);
+      background: rgba(107, 76, 154, 0.2);
+      border: 1px solid rgba(107, 76, 154, 0.5);
       padding: 8px 16px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       color: #d4c5f9;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-weight: 500;
-      margin-bottom: 20px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+    }
+    
+    .badge:hover {
+      background: rgba(107, 76, 154, 0.35);
+      border-color: rgba(107, 76, 154, 0.7);
     }
     
     h1 {
-      font-size: clamp(36px, 6vw, 64px);
+      font-size: clamp(48px, 7vw, 72px);
       font-weight: 700;
-      line-height: 1.1;
-      margin: 0 0 20px 0;
+      line-height: 1.15;
+      margin: 0 0 28px 0;
       color: #ffffff;
+      letter-spacing: -1px;
+      transition: all 0.3s ease;
+    }
+    
+    h1:hover {
+      color: #FF7A3D;
+      transform: translateY(-2px);
     }
     
     .subheadline {
       font-size: 18px;
-      line-height: 1.6;
+      line-height: 1.7;
       color: #e0d5f0;
-      margin: 0 0 30px 0;
-      max-width: 500px;
+      margin: 0 0 40px 0;
+      max-width: 550px;
+      transition: all 0.3s ease;
+    }
+    
+    .subheadline:hover {
+      color: #f5f0ff;
     }
     
     .benefits {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      margin-bottom: 40px;
+      gap: 18px;
+      margin-bottom: 48px;
     }
     
     .benefit-item {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
+      gap: 14px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .benefit-item:hover .benefit-text {
+      color: #f5f0ff;
+      transform: translateX(4px);
     }
     
     .benefit-dot {
-      width: 20px;
-      height: 20px;
-      background: #9370db;
+      width: 8px;
+      height: 8px;
+      background: #FF7A3D;
       border-radius: 50%;
       flex-shrink: 0;
-      margin-top: 2px;
+      margin-top: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .benefit-item:hover .benefit-dot {
+      width: 10px;
+      height: 10px;
+      box-shadow: 0 0 12px rgba(255, 122, 61, 0.5);
     }
     
     .benefit-text {
       margin: 0;
       color: #d4c5f9;
       font-size: 15px;
+      line-height: 1.5;
+      transition: all 0.3s ease;
     }
     
     .cta-button {
-      background: #9370db;
+      background: #6B4C9A;
       color: white;
       border: none;
-      padding: 16px 40px;
+      padding: 16px 48px;
       border-radius: 8px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 8px 24px rgba(147, 112, 219, 0.4);
+      box-shadow: 0 8px 24px rgba(107, 76, 154, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: #FF7A3D;
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    
+    .cta-button:hover::before {
+      left: 0;
     }
     
     .cta-button:hover {
-      background: #a878ff;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(147, 112, 219, 0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(107, 76, 154, 0.5);
     }
     
     .trust-section {
-      margin-top: 40px;
-      padding-top: 40px;
-      border-top: 1px solid rgba(147, 112, 219, 0.2);
+      margin-top: 48px;
+      padding-top: 48px;
+      border-top: 1px solid rgba(107, 76, 154, 0.2);
     }
     
     .trust-label {
       margin: 0 0 12px 0;
-      font-size: 12px;
+      font-size: 11px;
       color: #a89bc4;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
       font-weight: 600;
+      transition: all 0.3s ease;
     }
     
     .trust-text {
       margin: 0;
       color: #d4c5f9;
       font-size: 14px;
+      line-height: 1.6;
+      transition: all 0.3s ease;
     }
     
-    .trust-text strong { color: #ffffff; }
-    .trust-stars { color: #ffd700; }
-    .trust-rating { color: #a89bc4; }
+    .trust-section:hover .trust-text {
+      color: #f5f0ff;
+    }
+    
+    .trust-text strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+    
+    .trust-stars {
+      color: #ffd700;
+      margin: 0 6px;
+    }
+    
+    .trust-rating {
+      color: #a89bc4;
+    }
     
     .dashboard-svg {
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       height: auto;
-      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.4));
+      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.5));
+      transition: all 0.4s ease;
+    }
+    
+    .dashboard-svg:hover {
+      transform: translateY(-8px);
+    }
+    
+    @media (max-width: 1024px) {
+      header { padding: 0 30px; }
+      nav { gap: 24px; }
+      nav a { font-size: 13px; }
+      .hero-content { flex-direction: column; padding: 60px 40px; gap: 40px; }
+      h1 { font-size: 42px; }
+      .subheadline { font-size: 16px; }
+      .dashboard-svg { max-width: 350px; }
     }
     
     @media (max-width: 768px) {
-      .hero-content {
-        flex-direction: column;
-        padding: 60px 30px;
-        gap: 40px;
+      header {
+        padding: 0 20px;
+        height: 60px;
       }
       
-      h1 { font-size: 32px; }
-      .subheadline { font-size: 16px; }
-      .dashboard-svg { max-width: 300px; }
+      .logo { font-size: 20px; }
+      nav { gap: 16px; }
+      nav a { font-size: 12px; }
+      
+      .hero {
+        margin-top: 60px;
+      }
+      
+      .hero-content {
+        flex-direction: column;
+        padding: 40px 20px;
+        gap: 30px;
+        height: auto;
+      }
+      
+      h1 { font-size: 32px; margin-bottom: 16px; }
+      .subheadline { font-size: 15px; margin-bottom: 28px; }
+      .benefits { gap: 14px; margin-bottom: 32px; }
+      .cta-button { padding: 14px 36px; font-size: 15px; }
+      .trust-section { margin-top: 32px; padding-top: 32px; }
+      .dashboard-svg { max-width: 100%; min-width: 280px; }
     }
   </style>
 </head>
 <body>
+  <header>
+    <div class="logo">
+      P<span class="logo-x">X</span>SOL
+    </div>
+    <nav>
+      <div class="nav-dropdown">
+        <a href="#software">Software para hoteles</a>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#agencias">Software para agencias</a>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#recursos">Recursos</a>
+      </div>
+      <a href="#precios">Precios</a>
+      <a href="#nosotros">Nosotros</a>
+    </nav>
+  </header>
+
   <div class="hero">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
@@ -181,7 +381,7 @@
     
     <div class="hero-content">
       <div class="hero-left">
-        <div class="badge">+ Más RevPAR</div>
+        <div class="badge">Pricing dinámico IA-first</div>
         
         <h1>Menos horas.<br/>Más reservas.</h1>
         
@@ -200,7 +400,7 @@
           </div>
           <div class="benefit-item">
             <div class="benefit-dot"></div>
-            <p class="benefit-text">Automatización que respeta tu negocio.</p>
+            <p class="benefit-text">Automatización que hace más eficiente tu negocio.</p>
           </div>
         </div>
         
@@ -210,7 +410,7 @@
           <p class="trust-label">De confianza</p>
           <p class="trust-text">
             <strong>+1800 hoteles</strong> sumando más revenue
-            <span class="trust-stars"> ★★★★★</span> <span class="trust-rating">4.8/5</span>
+            <span class="trust-stars">★★★★★</span> <span class="trust-rating">4.8/5</span>
           </p>
         </div>
       </div>
@@ -223,9 +423,9 @@
           <text x="370" y="50" font-size="10" fill="#00cc88" text-anchor="end" font-weight="600">EN VIVO</text>
           <line x1="30" y1="65" x2="370" y2="65" stroke="#e0e0e0" stroke-width="0.5"/>
           <text x="35" y="90" font-size="13" font-weight="600" fill="#333">RMS › Agente IA</text>
-          <text x="370" y="90" font-size="10" fill="#9370db" text-anchor="end" font-weight="500">15-17 may</text>
+          <text x="370" y="90" font-size="10" fill="#6B4C9A" text-anchor="end" font-weight="500">15-17 may</text>
           <rect x="35" y="105" width="330" height="75" rx="8" fill="#f3e5ff"/>
-          <circle cx="60" cy="135" r="18" fill="#9370db"/>
+          <circle cx="60" cy="135" r="18" fill="#6B4C9A"/>
           <text x="60" y="142" font-size="24" fill="#fff" text-anchor="middle" font-weight="600">⚡</text>
           <text x="90" y="128" font-size="13" font-weight="700" fill="#1a1a1a">Demanda detectada</text>
           <text x="90" y="145" font-size="11" fill="#666">pickup +24% vs histórico, set comp. +8%</text>
@@ -261,16 +461,16 @@
     window.addEventListener('resize', resizeCanvas);
 
     const particles = [];
-    const particleCount = 35;
+    const particleCount = 50;
 
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.15;
-        this.vy = (Math.random() - 0.5) * 0.05;
-        this.size = Math.random() * 1.5 + 0.5;
-        this.opacity = Math.random() * 0.4 + 0.05;
+        this.vx = (Math.random() - 0.5) * 0.08;
+        this.vy = (Math.random() - 0.5) * 0.03;
+        this.size = Math.random() * 2 + 0.8;
+        this.opacity = Math.random() * 0.5 + 0.1;
         this.maxOpacity = this.opacity;
       }
       
@@ -283,12 +483,12 @@
         if (this.y < 0) this.y = canvas.height;
         if (this.y > canvas.height) this.y = 0;
         
-        this.opacity += (Math.random() - 0.5) * 0.01;
-        this.opacity = Math.max(0.02, Math.min(this.maxOpacity, this.opacity));
+        this.opacity += (Math.random() - 0.5) * 0.008;
+        this.opacity = Math.max(0.05, Math.min(this.maxOpacity, this.opacity));
       }
       
       draw() {
-        ctx.fillStyle = `rgba(212, 197, 249, ${this.opacity})`;
+        ctx.fillStyle = `rgba(255, 195, 113, ${this.opacity})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
