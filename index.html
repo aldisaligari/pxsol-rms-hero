@@ -3,1141 +3,593 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RMS para Hoteles - Pxsol</title>
+  <title>RMS para Hoteles — PXSOL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0e0720; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ===== HEADER ===== */
+    :root {
+      --black:  #080808;
+      --white:  #ffffff;
+      --gray:   rgba(255,255,255,0.42);
+      --dimmer: rgba(255,255,255,0.18);
+      --red:    #CC1020;
+    }
+
+    html, body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════ HEADER ══════════════════════ */
     header {
       position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      background: rgba(10, 5, 22, 0.97);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 0 40px;
-      height: 68px;
+      inset: 0 0 auto;
+      z-index: 200;
+      height: 64px;
+      padding: 0 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 32px;
+      transition: background .35s, border-color .35s;
+    }
+    header.solid {
+      background: rgba(8,8,8,.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
 
-    /* Logo SVG */
-    .logo-svg { height: 34px; width: auto; flex-shrink: 0; }
+    /* Logo */
+    .logo { height: 26px; flex-shrink: 0; }
 
     /* Nav */
-    nav {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-      flex: 1;
-      justify-content: center;
-    }
+    nav { display: flex; gap: 36px; align-items: center; }
     nav a {
-      color: rgba(255,255,255,0.6);
+      color: var(--gray);
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
-      white-space: nowrap;
-      transition: color 0.2s;
+      letter-spacing: .01em;
+      transition: color .18s;
     }
-    nav a:hover { color: #fff; }
+    nav a:hover { color: var(--white); }
 
-    /* Globe dropdown */
-    .globe-wrapper { position: relative; flex-shrink: 0; }
+    /* Globe */
+    .globe-wrap { position: relative; flex-shrink: 0; }
     .globe-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 6px 10px 6px 8px;
-      cursor: pointer;
-      color: rgba(255,255,255,0.7);
-      font-size: 13px;
-      transition: all 0.2s;
-    }
-    .globe-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
-    .globe-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
-    .globe-chevron {
-      font-size: 9px;
-      opacity: 0.5;
-      transition: transform 0.2s;
-      display: inline-block;
-    }
-    .globe-wrapper.open .globe-chevron { transform: rotate(180deg); }
-
-    .globe-dropdown {
-      position: absolute;
-      top: calc(100% + 10px);
-      left: 50%;
-      transform: translateX(-50%) scale(0.94) translateY(-4px);
-      background: #fff;
-      border-radius: 12px;
-      padding: 6px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
-      min-width: 140px;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .globe-wrapper.open .globe-dropdown {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateX(-50%) scale(1) translateY(0);
-    }
-    .country-option {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 12px;
-      border-radius: 7px;
-      cursor: pointer;
-      font-size: 13px;
-      color: #222;
-      transition: background 0.12s;
-    }
-    .country-option:hover { background: #f4f4f8; }
-    .country-flag { font-size: 17px; }
-
-    /* Header actions */
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .btn-login {
+      display: flex; align-items: center; gap: 5px;
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.8);
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 99px;
+      padding: 5px 10px 5px 8px;
+      color: var(--gray); font-size: 12px;
+      font-family: inherit; cursor: pointer;
+      transition: all .18s;
     }
-    .btn-login:hover { background: rgba(255,255,255,0.07); color: #fff; border-color: rgba(255,255,255,0.3); }
-    .btn-quote {
-      background: #FF3B30;
-      border: none;
-      color: #fff;
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-    .btn-quote:hover { background: #e0352b; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,59,48,0.35); }
+    .globe-btn svg { width: 13px; height: 13px; }
+    .globe-btn:hover { border-color: rgba(255,255,255,.3); color: #fff; }
+    .caret { font-size: 8px; transition: transform .18s; display: inline-block; }
+    .globe-wrap.open .caret { transform: rotate(180deg); }
 
-    /* ===== HERO ===== */
+    .globe-drop {
+      position: absolute; top: calc(100% + 9px); right: 0;
+      background: #fff; border-radius: 11px; padding: 6px;
+      box-shadow: 0 20px 56px rgba(0,0,0,.5);
+      min-width: 150px; opacity: 0; pointer-events: none;
+      transform: translateY(-8px) scale(.95);
+      transition: all .18s cubic-bezier(.34,1.56,.64,1);
+    }
+    .globe-wrap.open .globe-drop {
+      opacity: 1; pointer-events: all;
+      transform: translateY(0) scale(1);
+    }
+    .country {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 12px; border-radius: 7px; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: #111;
+      font-family: inherit; transition: background .1s;
+    }
+    .country:hover { background: #f3f2f8; }
+    .country .flag { font-size: 16px; }
+
+    /* Header right */
+    .h-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .btn-in {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.65);
+      padding: 7px 18px; border-radius: 7px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      cursor: pointer; white-space: nowrap; transition: all .18s;
+    }
+    .btn-in:hover { border-color: rgba(255,255,255,.3); color: #fff; }
+    .btn-ct {
+      background: var(--red); border: none; color: #fff;
+      padding: 8px 20px; border-radius: 7px;
+      font-size: 13px; font-weight: 700; font-family: inherit;
+      cursor: pointer; white-space: nowrap; transition: all .18s;
+    }
+    .btn-ct:hover { background: #b80d1a; }
+
+    /* ══════════════════════ HERO ══════════════════════ */
     .hero {
+      width: 100%; min-height: 100vh;
+      display: grid;
+      grid-template-columns: 52% 48%;
       position: relative;
-      width: 100%;
-      min-height: 100vh;
-      overflow: hidden;
-      margin-top: 68px;
-    }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background-image: url('davinci_luxury_hotel_lobby_reception_area__minimalist_mode.png');
-      background-size: cover;
-      background-position: center;
-    }
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg,
-        rgba(10, 5, 22, 0.96) 0%,
-        rgba(14, 7, 30, 0.88) 50%,
-        rgba(20, 10, 40, 0.75) 100%
-      );
-    }
-    #particles { position: absolute; inset: 0; opacity: 0.55; pointer-events: none; }
-
-    .hero-content {
-      position: relative;
-      min-height: calc(100vh - 68px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 72px 80px;
-      max-width: 1440px;
-      margin: 0 auto;
-      gap: 64px;
-      z-index: 10;
     }
 
-    .hero-left {
-      flex: 1;
-      min-width: 0;
-      max-width: 540px;
-    }
-    .hero-right {
-      flex: 1.15;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      min-width: 0;
-    }
-
-    /* Badge */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,59,48,0.1);
-      border: 1px solid rgba(255,59,48,0.25);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 10.5px;
-      color: #ff8a82;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: 700;
-      margin-bottom: 22px;
-    }
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      background: #FF3B30;
-      border-radius: 50%;
-      animation: blink 2s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    /* Headline */
-    h1 {
-      font-size: clamp(38px, 5vw, 66px);
-      font-weight: 800;
-      line-height: 1.1;
-      margin: 0 0 20px 0;
-      color: #ffffff;
-      letter-spacing: -1.5px;
-    }
-    h1 em {
-      font-style: normal;
-      color: #FF3B30;
-    }
-
-    .subheadline {
-      font-size: 16.5px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.55);
-      margin: 0 0 36px 0;
-      max-width: 480px;
-    }
-
-    /* ===== BENEFIT CARDS ===== */
-    .benefits {
+    /* ── LEFT COLUMN ── */
+    .col-left {
+      padding: 120px 56px 64px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 10.5px; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--dimmer); margin-bottom: 24px;
+    }
+    .eyebrow-line { width: 28px; height: 1px; background: var(--dimmer); }
+
+    /* The massive headline */
+    .headline {
+      font-size: clamp(64px, 8.5vw, 124px);
+      font-weight: 900;
+      line-height: .92;
+      letter-spacing: -3.5px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 40px;
+    }
+    .headline .line-label {
+      display: block;
+      font-size: clamp(18px, 2.2vw, 28px);
+      font-weight: 400;
+      color: var(--gray);
+      letter-spacing: 0;
+      text-transform: none;
+      margin-bottom: 12px;
+    }
+    .headline .red { color: var(--red); }
+    /* Outlined text — the "menos" effect */
+    .headline .outline {
+      -webkit-text-stroke: 2px rgba(255,255,255,.55);
+      color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--gray);
+      max-width: 400px;
+      font-weight: 500;
       margin-bottom: 36px;
     }
-    .benefit-card {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px;
-      padding: 16px 20px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
-    }
-    .benefit-card:hover {
-      background: rgba(255,59,48,0.07);
-      border-color: rgba(255,59,48,0.25);
-      transform: translateX(6px);
-      box-shadow: -4px 0 20px rgba(255,59,48,0.06), 0 4px 20px rgba(0,0,0,0.2);
-    }
-    .benefit-icon {
-      width: 42px;
-      height: 42px;
-      min-width: 42px;
-      background: rgba(255,59,48,0.1);
-      border: 1px solid rgba(255,59,48,0.18);
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 19px;
-      transition: all 0.3s;
-    }
-    .benefit-card:hover .benefit-icon {
-      background: rgba(255,59,48,0.18);
-      border-color: rgba(255,59,48,0.35);
-      transform: scale(1.08);
-    }
-    .benefit-body { flex: 1; min-width: 0; }
-    .benefit-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 3px;
-    }
-    .benefit-desc {
-      font-size: 13px;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.5;
-    }
-    .benefit-arrow {
-      color: rgba(255,255,255,0.2);
-      font-size: 16px;
-      transition: all 0.3s;
-      flex-shrink: 0;
-    }
-    .benefit-card:hover .benefit-arrow {
-      color: #FF3B30;
-      transform: translateX(4px);
-    }
 
-    /* CTA */
-    .cta-group {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
+    .cta-row {
+      display: flex; align-items: center; gap: 24px; margin-bottom: 56px;
     }
-    .cta-primary {
-      background: #ffffff;
-      color: #6B4C9A;
-      border: none;
-      padding: 15px 38px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.25s;
-      box-shadow: 0 4px 24px rgba(255,255,255,0.08);
-      letter-spacing: -0.2px;
+    .cta-prim {
+      background: var(--white); color: #0a0a14;
+      border: none; padding: 15px 42px;
+      border-radius: 8px; font-size: 14px;
+      font-weight: 800; font-family: inherit;
+      cursor: pointer; letter-spacing: -.1px;
+      transition: all .22s;
     }
-    .cta-primary:hover {
-      background: #f0e8ff;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 36px rgba(255,255,255,0.18);
+    .cta-prim:hover { background: #ede6ff; transform: translateY(-2px); }
+    .cta-sec {
+      background: none; border: none; color: var(--gray);
+      font-size: 13.5px; font-weight: 600; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
+      transition: color .18s;
     }
-    .cta-ghost {
-      color: rgba(255,255,255,0.55);
-      font-size: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.2s;
-      background: none;
-      border: none;
-    }
-    .cta-ghost:hover { color: #fff; }
-    .cta-ghost span { transition: transform 0.2s; }
-    .cta-ghost:hover span { transform: translateX(4px); }
+    .cta-sec .arr { transition: transform .18s; }
+    .cta-sec:hover { color: var(--white); }
+    .cta-sec:hover .arr { transform: translateX(5px); }
 
-    /* Trust bar */
-    .trust-bar {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      padding-top: 32px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      flex-wrap: wrap;
-      gap: 0;
+    /* Trust */
+    .trust {
+      display: flex; align-items: center; gap: 0;
+      padding-top: 36px; border-top: 1px solid rgba(255,255,255,.07);
     }
-    .trust-item {
-      padding: 0 28px 0 0;
-      margin-right: 28px;
-      border-right: 1px solid rgba(255,255,255,0.1);
-    }
-    .trust-item:last-child { border-right: none; margin-right: 0; }
-    .trust-num {
-      font-size: 22px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.1;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .trust-stars { color: #FFD700; font-size: 12px; }
-    .trust-lbl {
-      font-size: 11px;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 3px;
-    }
+    .t-item { padding-right: 28px; margin-right: 28px; border-right: 1px solid rgba(255,255,255,.07); }
+    .t-item:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+    .t-num { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -.5px; line-height: 1.1; }
+    .t-stars { color: #FFD700; font-size: 11px; }
+    .t-lbl { font-size: 10px; color: var(--dimmer); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
 
-    /* ===== DEVICE FRAMES ===== */
-    .devices-wrapper {
+    /* ── RIGHT COLUMN ── */
+    .col-right {
       position: relative;
-      width: 100%;
-      max-width: 560px;
-    }
-
-    /* Browser frame */
-    .browser-frame {
-      position: relative;
-      width: 100%;
-      background: #1c1030;
-      border-radius: 14px;
       overflow: hidden;
-      box-shadow:
-        0 40px 100px rgba(0,0,0,0.7),
-        0 0 0 1px rgba(255,255,255,0.07),
-        inset 0 1px 0 rgba(255,255,255,0.05);
-      animation: deviceIn 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 0.2s both;
-    }
-    @keyframes deviceIn {
-      from { opacity: 0; transform: translateY(28px) scale(0.96); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    .browser-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 14px;
-      background: rgba(255,255,255,0.03);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+    /* Photo mosaic */
+    .mosaic {
+      position: absolute;
+      inset: 56px 40px 40px -20px;
     }
-    .browser-dots { display: flex; gap: 6px; }
-    .bdot {
-      width: 11px;
-      height: 11px;
+
+    .ph {
+      position: absolute;
+      overflow: hidden;
+      background: #111;
+    }
+    .ph img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(.82) contrast(1.08) saturate(.9);
+      transition: transform .7s ease;
+      display: block;
+    }
+    .ph:hover img { transform: scale(1.05); }
+
+    /* Photo shapes — mimic the reference collage */
+    .ph-a {
+      top: 0; left: 0;
+      width: 62%; height: 52%;
+      border-radius: 16px 16px 64px 16px;
+    }
+    .ph-b {
+      top: 0; right: 0;
+      width: 34%; height: 37%;
       border-radius: 50%;
     }
-    .bdot-r { background: #FF5F57; }
-    .bdot-y { background: #FEBC2E; }
-    .bdot-g { background: #28C840; }
-    .browser-url {
-      flex: 1;
-      background: rgba(255,255,255,0.06);
-      border-radius: 6px;
-      padding: 5px 10px;
-      font-size: 10.5px;
-      color: rgba(255,255,255,0.35);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .ph-c {
+      top: 39%; right: 0;
+      width: 52%; height: 46%;
+      border-radius: 64px 16px 16px 16px;
+    }
+    .ph-d {
+      bottom: 0; left: 0;
+      width: 36%; height: 34%;
+      border-radius: 16px;
     }
 
-    /* Dashboard inside browser */
-    .dash {
-      background: #f8f7fc;
-      padding: 18px;
+    /* Small "EN VIVO" overlay badge on main photo */
+    .ph-live-badge {
+      position: absolute;
+      bottom: 16px; left: 16px;
+      background: rgba(8,8,8,.82);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 99px;
+      padding: 5px 12px 5px 8px;
+      display: flex; align-items: center; gap: 7px;
+      font-size: 9.5px; font-weight: 700;
+      color: rgba(255,255,255,.55);
+      letter-spacing: .3px;
+      pointer-events: none;
+    }
+    .live-dot { width: 5px; height: 5px; background: #2ecc71; border-radius: 50%; animation: blink 2s infinite; }
+
+    /* Floating dashboard cards */
+    .fcard {
+      position: absolute;
+      background: rgba(10,10,16,.88);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 14px;
+      box-shadow: 0 20px 56px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.05) inset;
+      font-family: 'Montserrat', sans-serif;
     }
 
-    .dash-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #ece9f5;
+    /* Card: price suggestion */
+    .fc-price {
+      bottom: 56px; left: -48px;
+      width: 256px; padding: 16px 18px;
+      animation: rise .5s ease .4s both;
     }
-    .dash-brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #888;
+    .fc-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
     }
-    .dash-logo-chip {
-      width: 22px;
-      height: 22px;
-      background: #6B4C9A;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 8px;
-      font-weight: 900;
-    }
-    .dash-live {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 10px;
-      font-weight: 700;
-      color: #00b87a;
-      background: rgba(0,184,122,0.1);
-      padding: 4px 10px;
-      border-radius: 20px;
-    }
-    .dash-live-dot {
-      width: 5px;
-      height: 5px;
-      background: #00b87a;
-      border-radius: 50%;
-      animation: blink 1.8s ease-in-out infinite;
-    }
+    .fc-title { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: 1px; }
+    .fc-live { display: flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 700; color: #2ecc71; }
 
-    /* Stats row */
-    .dash-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+    .fc-alert {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(204,16,32,.1);
+      border: 1px solid rgba(204,16,32,.18);
+      border-radius: 8px; padding: 8px 10px;
       margin-bottom: 12px;
     }
-    .stat-box {
-      background: #fff;
-      border: 1px solid #ece9f5;
-      border-radius: 10px;
-      padding: 11px 12px;
-    }
-    .stat-lbl {
-      font-size: 9px;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .fc-alert-icon { font-size: 13px; }
+    .fc-alert-txt { font-size: 10px; font-weight: 700; color: #e8707a; }
+
+    .fc-prow {
+      display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap;
       margin-bottom: 5px;
     }
-    .stat-val {
-      font-size: 19px;
-      font-weight: 800;
-      color: #1a1a2e;
-      font-family: 'Courier New', monospace;
-      line-height: 1;
+    .fc-old { font-size: 10px; color: rgba(255,255,255,.22); text-decoration: line-through; }
+    .fc-new { font-size: 21px; font-weight: 900; color: #fff; letter-spacing: -1px; }
+    .fc-pct {
+      font-size: 11px; font-weight: 800; color: #2ecc71;
+      background: rgba(46,204,113,.1); padding: 2px 8px; border-radius: 99px;
     }
-    .stat-chg {
-      font-size: 10px;
-      font-weight: 700;
-      margin-top: 3px;
-      display: flex;
-      align-items: center;
-      gap: 2px;
+    .fc-detail { font-size: 9px; color: rgba(255,255,255,.25); line-height: 1.6; margin-bottom: 12px; }
+    .fc-detail strong { color: rgba(255,255,255,.5); }
+    .fc-btns { display: flex; gap: 6px; }
+    .fc-b {
+      flex: 1; padding: 8px; border-radius: 7px;
+      font-size: 11px; font-weight: 700; font-family: inherit;
+      cursor: pointer; border: none; transition: all .18s;
     }
-    .chg-up { color: #00b87a; }
-    .chg-warn { color: #FF3B30; }
+    .fc-b-rej { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09); color: rgba(255,255,255,.4); }
+    .fc-b-rej:hover { background: rgba(255,255,255,.1); color: rgba(255,255,255,.7); }
+    .fc-b-app { background: #fff; color: #0a0a14; }
+    .fc-b-app:hover { background: #e8f8f0; }
 
-    /* Alert */
-    .dash-alert {
-      background: linear-gradient(135deg, #f0e8ff 0%, #ffe8e6 100%);
-      border: 1px solid rgba(107,76,154,0.15);
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    /* Card: pickup stat */
+    .fc-stat {
+      top: 16px; right: -16px;
+      width: 148px; padding: 14px 16px;
+      animation: rise .5s ease .55s both;
     }
-    .alert-icon {
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-    .alert-content { flex: 1; }
-    .alert-title {
-      font-size: 12px;
-      font-weight: 800;
-      color: #1a1a2e;
-      margin-bottom: 2px;
-    }
-    .alert-sub {
-      font-size: 10px;
-      color: #888;
-    }
-    .alert-badge {
-      background: #FF3B30;
-      color: #fff;
-      font-size: 8px;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 20px;
-      letter-spacing: 0.5px;
-      flex-shrink: 0;
-    }
+    .fcs-val { font-size: 32px; font-weight: 900; color: #2ecc71; letter-spacing: -1.5px; line-height: 1; margin-bottom: 2px; }
+    .fcs-lbl { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.28); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .fcs-sub { font-size: 10px; color: rgba(255,255,255,.4); display: flex; align-items: center; gap: 5px; }
 
-    /* Price suggestion */
-    .dash-suggest {
-      background: #fff;
-      border: 1px solid #ece9f5;
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-    .suggest-label {
-      font-size: 9px;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-    }
-    .price-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
-    }
-    .price-old { font-size: 11px; color: #bbb; text-decoration: line-through; }
-    .price-arr { color: #ccc; }
-    .price-new {
-      font-size: 24px;
-      font-weight: 900;
-      color: #1a1a2e;
-      font-family: 'Courier New', monospace;
-      line-height: 1;
-    }
-    .price-pct {
-      background: rgba(0,184,122,0.1);
-      color: #00b87a;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 3px 10px;
-      border-radius: 20px;
-    }
-    .suggest-meta {
-      font-size: 9.5px;
-      color: #999;
-      line-height: 1.5;
-    }
-    .suggest-meta strong { color: #444; }
+    @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
-    /* Actions */
-    .dash-btns {
-      display: flex;
-      gap: 8px;
-    }
-    .dbtn {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-    }
-    .dbtn-reject {
-      background: transparent;
-      border: 1px solid #ddd;
-      color: #666;
-    }
-    .dbtn-reject:hover { background: #f5f5f5; border-color: #bbb; }
-    .dbtn-approve {
-      background: #1a1a2e;
-      color: #fff;
-    }
-    .dbtn-approve:hover { background: #000; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-
-    /* ===== PHONE FRAME ===== */
-    .phone-frame {
-      position: absolute;
-      right: -52px;
-      bottom: -28px;
-      width: 164px;
-      background: #0a0518;
-      border-radius: 34px;
-      box-shadow:
-        0 40px 80px rgba(0,0,0,0.65),
-        0 0 0 2px rgba(255,59,48,0.45),
-        0 0 0 5px rgba(255,59,48,0.1),
-        0 0 0 6px rgba(0,0,0,0.4),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
-      overflow: hidden;
-      animation: deviceIn 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 0.45s both;
-    }
-    .phone-island {
-      height: 26px;
-      background: #0a0518;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .phone-pill {
-      width: 62px;
-      height: 14px;
-      background: #000;
-      border-radius: 10px;
-    }
-    .phone-screen {
-      background: #fff;
-      margin: 0 3px;
-      padding: 10px;
-      min-height: 272px;
-    }
-    .phone-status {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 9px;
-    }
-    .phone-time { font-size: 9px; font-weight: 800; color: #111; }
-    .phone-icons { font-size: 7px; color: #666; letter-spacing: 1px; }
-
-    /* Phone notification */
-    .phone-notif {
-      background: linear-gradient(135deg, #f0e8ff, #fff4f3);
-      border-radius: 9px;
-      padding: 9px 11px;
-      margin-bottom: 9px;
-      border-left: 3px solid #6B4C9A;
-    }
-    .pn-app {
-      font-size: 8px;
-      font-weight: 700;
-      color: #6B4C9A;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 3px;
-    }
-    .pn-title {
-      font-size: 10px;
-      font-weight: 800;
-      color: #111;
-      margin-bottom: 2px;
-    }
-    .pn-text {
-      font-size: 9px;
-      color: #666;
-      line-height: 1.4;
-    }
-
-    /* Mini chart */
-    .phone-chart {
-      background: #f8f7fc;
-      border-radius: 9px;
-      padding: 8px 10px 4px;
-      margin-bottom: 9px;
-      height: 72px;
-      position: relative;
-      overflow: hidden;
-    }
-    .chart-label {
-      font-size: 7.5px;
-      color: #bbb;
-      position: absolute;
-      top: 6px;
-      left: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-    .bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 3.5px;
-      height: 100%;
-      padding-top: 16px;
-    }
-    .bar {
-      flex: 1;
-      border-radius: 3px 3px 0 0;
-      background: linear-gradient(to top, #c8b8e8, #d4c5f9);
-    }
-    .bar.hot {
-      background: linear-gradient(to top, #FF3B30, #ff7b73);
-      position: relative;
-    }
-    .bar.hot::after {
-      content: '↑';
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 8px;
-      color: #FF3B30;
-      font-weight: 900;
-    }
-
-    /* Phone actions */
-    .phone-actions {
-      display: flex;
-      gap: 6px;
-    }
-    .pa-btn {
-      flex: 1;
-      padding: 7px 4px;
-      border-radius: 7px;
-      font-size: 9px;
-      font-weight: 800;
-      text-align: center;
-      cursor: pointer;
-      border: none;
-    }
-    .pa-reject { background: #f0eef8; color: #888; }
-    .pa-approve { background: #1a1a2e; color: #fff; }
-
-    .phone-home-bar {
-      height: 22px;
-      background: #0a0518;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 3px 3px 0;
-      border-radius: 0 0 3px 3px;
-    }
-    .home-line {
-      width: 44px;
-      height: 3px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 2px;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1200px) {
-      header { padding: 0 28px; }
-      nav { gap: 24px; }
-      .hero-content { padding: 60px 48px; gap: 48px; }
-      .devices-wrapper { max-width: 480px; }
-    }
-
+    /* ══════════════════════ RESPONSIVE ══════════════════════ */
     @media (max-width: 1024px) {
-      nav a:nth-child(n+4) { display: none; }
+      header { padding: 0 28px; }
+      .col-left { padding: 110px 40px 56px; }
+      .headline { font-size: 80px; letter-spacing: -2.5px; }
     }
 
     @media (max-width: 860px) {
-      nav { display: none; }
-      .hero-content { flex-direction: column; padding: 48px 32px 80px; gap: 56px; min-height: unset; }
-      .hero-left { max-width: 100%; }
-      .hero-right { justify-content: center; width: 100%; }
-      h1 { font-size: 40px; }
-      .devices-wrapper { max-width: 420px; }
-      .phone-frame { right: -24px; bottom: -18px; width: 140px; }
+      .hero { grid-template-columns: 1fr; }
+      .col-right { height: 56vw; min-height: 340px; order: -1; }
+      .mosaic { inset: 0; }
+      .ph-a { width: 60%; height: 54%; }
+      .ph-b { width: 34%; height: 38%; }
+      .ph-c { right: 0; width: 50%; }
+      .ph-d { bottom: 0; }
+      .fc-price { left: 12px; bottom: 12px; width: 220px; }
+      .fc-stat { right: 8px; top: 8px; }
+      .col-left { padding: 48px 32px 56px; }
+      .headline { font-size: 64px; letter-spacing: -2px; }
     }
 
     @media (max-width: 600px) {
-      header { padding: 0 16px; height: 60px; }
-      .btn-login { display: none; }
-      .hero { margin-top: 60px; }
-      .hero-content { padding: 40px 20px 72px; gap: 48px; }
-      h1 { font-size: 34px; letter-spacing: -1px; }
-      .subheadline { font-size: 15px; }
-      .devices-wrapper { max-width: 100%; }
-      .phone-frame { right: -12px; width: 124px; }
-      .trust-bar { gap: 16px; }
-      .trust-item { border-right: none; padding-right: 0; margin-right: 0; }
-      .dash-stats { grid-template-columns: repeat(2, 1fr); }
-      .dash-stats .stat-box:last-child { display: none; }
+      header { padding: 0 16px; height: 58px; }
+      nav { display: none; }
+      .btn-in { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .col-right { height: 70vw; min-height: 280px; }
+      .col-left { padding: 40px 20px 56px; }
+      .headline { font-size: 48px; letter-spacing: -1.5px; }
+      .headline .line-label { font-size: 15px; }
+      .hero-desc { font-size: 14px; }
+      .trust { flex-wrap: wrap; gap: 16px; }
+      .t-item { border-right: none !important; padding-right: 0 !important; margin-right: 0 !important; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ===== HEADER ===== -->
-  <header>
-    <!-- PXSOL Logo SVG -->
-    <svg class="logo-svg" viewBox="0 0 248 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <text y="44" font-family="-apple-system,'Arial Black',Arial,sans-serif" font-size="50" font-weight="900" fill="white">P</text>
-      <!-- Red X strokes -->
-      <line x1="42" y1="1" x2="88" y2="51" stroke="#FF3B30" stroke-width="14" stroke-linecap="round"/>
-      <line x1="88" y1="1" x2="42" y2="51" stroke="#FF3B30" stroke-width="14" stroke-linecap="round"/>
-      <text x="96" y="44" font-family="-apple-system,'Arial Black',Arial,sans-serif" font-size="50" font-weight="900" fill="white">SOL</text>
+  <!-- ══════════════ HEADER ══════════════ -->
+  <header id="hdr">
+
+    <!--
+      LOGO:
+      Opción A — SVG inline (siempre funciona, sin archivos externos):
+      Opción B — reemplazar todo el <svg> con: <img class="logo" src="pxsol-logo.png" alt="PXSOL">
+                 y poner el PNG en la misma carpeta que este HTML.
+    -->
+    <svg class="logo" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+      <text y="132"
+        font-family="'Montserrat','Century Gothic','Arial Black',sans-serif"
+        font-size="142" font-weight="900" fill="#ffffff">P</text>
+      <!-- X: dos rombos cruzados con puntas afiladas -->
+      <polygon points="112,-4 192,76 218,176 138,96" fill="#CC1020"/>
+      <polygon points="218,-4 192,80 110,176 136,72" fill="#CC1020"/>
+      <text x="228" y="132"
+        font-family="'Montserrat','Century Gothic','Arial Black',sans-serif"
+        font-size="142" font-weight="900" fill="#ffffff">SOL</text>
     </svg>
 
     <nav>
       <a href="#">Software para hoteles</a>
-      <a href="#">Software para agencias</a>
+      <a href="#">Agencias</a>
       <a href="#">Recursos</a>
       <a href="#">Precios</a>
       <a href="#">Nosotros</a>
     </nav>
 
-    <div class="globe-wrapper" id="globeWrapper">
+    <div class="globe-wrap" id="gw">
       <button class="globe-btn" onclick="toggleGlobe(event)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
           <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
         </svg>
-        <span class="globe-chevron">▾</span>
+        <span class="caret">▾</span>
       </button>
-      <div class="globe-dropdown" id="globeDropdown">
-        <div class="country-option"><span class="country-flag">🇦🇷</span> Argentina</div>
-        <div class="country-option"><span class="country-flag">🇨🇱</span> Chile</div>
-        <div class="country-option"><span class="country-flag">🇨🇴</span> Colombia</div>
-        <div class="country-option"><span class="country-flag">🇲🇽</span> México</div>
-        <div class="country-option"><span class="country-flag">🇺🇾</span> Uruguay</div>
-        <div class="country-option"><span class="country-flag">🇵🇪</span> Perú</div>
+      <div class="globe-drop" id="gd">
+        <div class="country"><span class="flag">🇦🇷</span> Argentina</div>
+        <div class="country"><span class="flag">🇨🇱</span> Chile</div>
+        <div class="country"><span class="flag">🇨🇴</span> Colombia</div>
+        <div class="country"><span class="flag">🇲🇽</span> México</div>
+        <div class="country"><span class="flag">🇺🇾</span> Uruguay</div>
+        <div class="country"><span class="flag">🇵🇪</span> Perú</div>
       </div>
     </div>
 
-    <div class="header-actions">
-      <button class="btn-login">Iniciar sesión</button>
-      <button class="btn-quote">Cotizar</button>
+    <div class="h-right">
+      <button class="btn-in">Iniciar sesión</button>
+      <button class="btn-ct">Cotizar</button>
     </div>
   </header>
 
-  <!-- ===== HERO ===== -->
-  <div class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <canvas id="particles"></canvas>
+  <!-- ══════════════ HERO ══════════════ -->
+  <section class="hero">
 
-    <div class="hero-content">
-      <!-- LEFT: Copy -->
-      <div class="hero-left">
-        <div class="badge">
-          <span class="badge-dot"></span>
-          Pricing dinámico IA-first
+    <!-- ── LEFT: Copy ── -->
+    <div class="col-left">
+
+      <div>
+        <div class="eyebrow">
+          <span class="eyebrow-line"></span>
+          Revenue Management System
         </div>
 
-        <h1>Menos horas.<br/><em>Más reservas.</em></h1>
+        <h1 class="headline">
+          <span class="line-label">Software para hoteles</span>
+          Más<br/>
+          <span class="red">revenue.</span><br/>
+          <span class="outline">Menos</span><br/>
+          trabajo.
+        </h1>
 
-        <p class="subheadline">
+        <p class="hero-desc">
           Nuestro RMS analiza demanda y competencia cada día. Te propone el precio exacto dentro de tus límites. Vos solo aprobás.
         </p>
 
-        <div class="benefits">
-          <div class="benefit-card">
-            <div class="benefit-icon">🧠</div>
-            <div class="benefit-body">
-              <div class="benefit-title">La IA propone, vos decidís</div>
-              <div class="benefit-desc">Sugerencias con contexto real de mercado. Sin adivinar, sin perder tiempo.</div>
-            </div>
-            <span class="benefit-arrow">→</span>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">📊</div>
-            <div class="benefit-body">
-              <div class="benefit-title">Datos, no intuición</div>
-              <div class="benefit-desc">Pickup, set competitivo y demanda analizada cada 24hs. Siempre dentro de tu rango.</div>
-            </div>
-            <span class="benefit-arrow">→</span>
-          </div>
-          <div class="benefit-card">
-            <div class="benefit-icon">⚡</div>
-            <div class="benefit-body">
-              <div class="benefit-title">Sincronización instantánea</div>
-              <div class="benefit-desc">Se actualiza en Booking y Expedia al instante. Tu equipo se enfoca en lo que importa.</div>
-            </div>
-            <span class="benefit-arrow">→</span>
-          </div>
-        </div>
-
-        <div class="cta-group">
-          <button class="cta-primary">Probar ahora</button>
-          <button class="cta-ghost">Ver demo en vivo <span>→</span></button>
-        </div>
-
-        <div class="trust-bar">
-          <div class="trust-item">
-            <div class="trust-num">+1.800</div>
-            <div class="trust-lbl">Hoteles activos</div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-num">4.8 <span class="trust-stars">★★★★★</span></div>
-            <div class="trust-lbl">Valoración promedio</div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-num">+12%</div>
-            <div class="trust-lbl">Revenue promedio</div>
-          </div>
+        <div class="cta-row">
+          <button class="cta-prim">Probar ahora</button>
+          <button class="cta-sec">Ver demo <span class="arr">→</span></button>
         </div>
       </div>
 
-      <!-- RIGHT: Devices -->
-      <div class="hero-right">
-        <div class="devices-wrapper">
-
-          <!-- Browser / dashboard mockup -->
-          <div class="browser-frame">
-            <div class="browser-bar">
-              <div class="browser-dots">
-                <div class="bdot bdot-r"></div>
-                <div class="bdot bdot-y"></div>
-                <div class="bdot bdot-g"></div>
-              </div>
-              <div class="browser-url">
-                <span>🔒</span>
-                <span>pms.pxsol.com / rms</span>
-              </div>
-            </div>
-
-            <div class="dash">
-              <!-- Top bar -->
-              <div class="dash-topbar">
-                <div class="dash-brand">
-                  <div class="dash-logo-chip">PX</div>
-                  RMS · Agente IA
-                </div>
-                <div class="dash-live">
-                  <div class="dash-live-dot"></div>
-                  EN VIVO
-                </div>
-              </div>
-
-              <!-- Stats -->
-              <div class="dash-stats">
-                <div class="stat-box">
-                  <div class="stat-lbl">Pickup hoy</div>
-                  <div class="stat-val">+24%</div>
-                  <div class="stat-chg chg-up">↑ vs histórico</div>
-                </div>
-                <div class="stat-box">
-                  <div class="stat-lbl">Set comp.</div>
-                  <div class="stat-val">+8%</div>
-                  <div class="stat-chg chg-up">↑ vs ayer</div>
-                </div>
-                <div class="stat-box">
-                  <div class="stat-lbl">Oport. abiertas</div>
-                  <div class="stat-val">3</div>
-                  <div class="stat-chg chg-warn">fechas pendientes</div>
-                </div>
-              </div>
-
-              <!-- Alert -->
-              <div class="dash-alert">
-                <div class="alert-icon">⚡</div>
-                <div class="alert-content">
-                  <div class="alert-title">Demanda detectada</div>
-                  <div class="alert-sub">pickup +24% vs histórico · set comp. +8%</div>
-                </div>
-                <div class="alert-badge">NUEVO</div>
-              </div>
-
-              <!-- Price suggestion -->
-              <div class="dash-suggest">
-                <div class="suggest-label">Sugerencia › Tarifa estándar · Sáb 14 dic</div>
-                <div class="price-row">
-                  <span class="price-old">ARS 96.000</span>
-                  <span class="price-arr">→</span>
-                  <span class="price-new" id="price-anim">ARS 104.190</span>
-                  <span class="price-pct" id="percent-anim">+8.5%</span>
-                </div>
-                <div class="suggest-meta">
-                  Demanda 25% sobre histórico · Tu tarifa queda 4% bajo el promedio del set ·
-                  Margen estimado: <strong>+ARS 384k</strong> · Aplicado a 3 fechas
-                </div>
-              </div>
-
-              <!-- Actions -->
-              <div class="dash-btns">
-                <button class="dbtn dbtn-reject">Rechazar</button>
-                <button class="dbtn dbtn-approve">✓ Aprobar sugerencia</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Phone frame -->
-          <div class="phone-frame">
-            <div class="phone-island">
-              <div class="phone-pill"></div>
-            </div>
-            <div class="phone-screen">
-              <div class="phone-status">
-                <span class="phone-time">9:41</span>
-                <span class="phone-icons">▌▌▌ WiFi ▓</span>
-              </div>
-
-              <div class="phone-notif">
-                <div class="pn-app">PXSOL RMS</div>
-                <div class="pn-title">⚡ Nueva sugerencia</div>
-                <div class="pn-text">Sáb 14 dic · Pickup +24% · Subir a ARS 104.190</div>
-              </div>
-
-              <div class="phone-chart">
-                <span class="chart-label">Revenue / semana</span>
-                <div class="bars">
-                  <div class="bar" style="height:38%"></div>
-                  <div class="bar" style="height:52%"></div>
-                  <div class="bar" style="height:44%"></div>
-                  <div class="bar" style="height:66%"></div>
-                  <div class="bar hot" style="height:92%"></div>
-                  <div class="bar" style="height:60%"></div>
-                  <div class="bar" style="height:70%"></div>
-                </div>
-              </div>
-
-              <div class="phone-actions">
-                <button class="pa-btn pa-reject">Rechazar</button>
-                <button class="pa-btn pa-approve">✓ Aprobar</button>
-              </div>
-            </div>
-            <div class="phone-home-bar">
-              <div class="home-line"></div>
-            </div>
-          </div>
-
+      <div class="trust">
+        <div class="t-item">
+          <div class="t-num">+1.800</div>
+          <div class="t-lbl">Hoteles activos</div>
+        </div>
+        <div class="t-item">
+          <div class="t-num">4.8 <span class="t-stars">★★★★★</span></div>
+          <div class="t-lbl">Valoración</div>
+        </div>
+        <div class="t-item">
+          <div class="t-num">+12%</div>
+          <div class="t-lbl">Revenue promedio</div>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- ── RIGHT: Photo collage + floating UI ── -->
+    <div class="col-right">
+      <div class="mosaic">
+
+        <!--
+          FOTOS: Usando Unsplash como placeholder.
+          Para producción, reemplazá los src con tus fotos reales de hotel.
+          Necesitás conexión a internet para que carguen los placeholders.
+        -->
+        <div class="ph ph-a">
+          <img
+            src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&q=80&fit=crop&crop=center"
+            alt="Hotel lobby">
+          <div class="ph-live-badge">
+            <div class="live-dot"></div>
+            pms.pxsol.com · EN VIVO
+          </div>
+        </div>
+
+        <div class="ph ph-b">
+          <img
+            src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500&q=80&fit=crop&crop=center"
+            alt="Hotel room">
+        </div>
+
+        <div class="ph ph-c">
+          <img
+            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80&fit=crop&crop=center"
+            alt="Hotel pool">
+        </div>
+
+        <div class="ph ph-d">
+          <img
+            src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=500&q=80&fit=crop&crop=center"
+            alt="Hotel detail">
+        </div>
+
+        <!-- Floating card: price suggestion -->
+        <div class="fcard fc-price">
+          <div class="fc-head">
+            <span class="fc-title">Agente IA · Sáb 14 dic</span>
+            <span class="fc-live"><div class="live-dot"></div> EN VIVO</span>
+          </div>
+
+          <div class="fc-alert">
+            <span class="fc-alert-icon">⚡</span>
+            <span class="fc-alert-txt">Demanda +24% vs histórico</span>
+          </div>
+
+          <div class="fc-prow">
+            <span class="fc-old">ARS 96.000</span>
+            <span style="color:rgba(255,255,255,.18);font-size:12px">→</span>
+            <span class="fc-new" id="pn">ARS 104.190</span>
+            <span class="fc-pct" id="pp">+8.5%</span>
+          </div>
+          <div class="fc-detail">Margen estimado: <strong>+ARS 384k</strong> · 3 fechas · Booking + Expedia</div>
+
+          <div class="fc-btns">
+            <button class="fc-b fc-b-rej">Rechazar</button>
+            <button class="fc-b fc-b-app">✓ Aprobar</button>
+          </div>
+        </div>
+
+        <!-- Floating card: stat -->
+        <div class="fcard fc-stat">
+          <div class="fcs-val">+24%</div>
+          <div class="fcs-lbl">Pickup hoy</div>
+          <div class="fcs-sub"><div class="live-dot"></div> vs histórico</div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
 
   <script>
+    // Header transparency on scroll
+    const hdr = document.getElementById('hdr');
+    const onScroll = () => hdr.classList.toggle('solid', window.scrollY > 10);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
     // Globe dropdown
     function toggleGlobe(e) {
       e.stopPropagation();
-      document.getElementById('globeWrapper').classList.toggle('open');
+      document.getElementById('gw').classList.toggle('open');
     }
-    document.addEventListener('click', function() {
-      document.getElementById('globeWrapper').classList.remove('open');
+    document.addEventListener('click', () => {
+      document.getElementById('gw').classList.remove('open');
     });
 
-    // Particles
-    const canvas = document.getElementById('particles');
-    const ctx = canvas.getContext('2d');
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
+    // Animated price
+    const pnEl = document.getElementById('pn');
+    const ppEl = document.getElementById('pp');
+    const BASE = 96000, PEAK = 112000;
 
-    const pts = [];
-    for (let i = 0; i < 45; i++) {
-      pts.push({
-        x: Math.random() * innerWidth,
-        y: Math.random() * innerHeight,
-        vx: (Math.random() - 0.5) * 0.05,
-        vy: (Math.random() - 0.5) * 0.04,
-        r: Math.random() * 1.6 + 0.4,
-        o: Math.random() * 0.35 + 0.05,
-        mo: 0
-      });
-    }
-    pts.forEach(p => p.mo = p.o);
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pts.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-        p.o += (Math.random() - 0.5) * 0.005;
-        p.o = Math.max(0.02, Math.min(p.mo, p.o));
-        ctx.fillStyle = `rgba(180, 160, 240, ${p.o})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      requestAnimationFrame(draw);
-    }
-    draw();
-
-    // Price animation
-    const priceEl = document.getElementById('price-anim');
-    const pctEl = document.getElementById('percent-anim');
-
-    function animPrice() {
+    (function tick() {
       const t = (Date.now() % 12000) / 12000;
-      let ep;
-      if (t < 0.4) ep = (t / 0.4) ** 2 * 0.6;
-      else if (t < 0.6) ep = 0.6 + ((t - 0.4) / 0.2) * 0.35;
-      else { const r = (t - 0.6) / 0.4; ep = 0.95 - r * r * 0.2; }
+      let e;
+      if      (t < .4) { const r = t / .4;     e = r * r * .6; }
+      else if (t < .6) { e = .6 + ((t - .4) / .2) * .35; }
+      else              { const r = (t - .6) / .4; e = .95 - r * r * .2; }
 
-      const base = 96000, max = 112000;
-      const price = Math.round(base + (max - base) * ep);
-      const pct = ((price - base) / base * 100).toFixed(1);
-      priceEl.textContent = `ARS ${price.toLocaleString('es-AR')}`;
-      pctEl.textContent = `+${pct}%`;
-      requestAnimationFrame(animPrice);
-    }
-    animPrice();
+      const price = Math.round(BASE + (PEAK - BASE) * e);
+      const pct   = ((price - BASE) / BASE * 100).toFixed(1);
+      pnEl.textContent = `ARS ${price.toLocaleString('es-AR')}`;
+      ppEl.textContent = `+${pct}%`;
+      requestAnimationFrame(tick);
+    })();
   </script>
 </body>
 </html>
