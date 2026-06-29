@@ -5,26 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RMS para Hoteles — PXSOL</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --black:  #080808;
       --white:  #ffffff;
-      --gray:   rgba(255,255,255,0.42);
-      --dimmer: rgba(255,255,255,0.18);
+      --gray:   rgba(255,255,255,0.45);
+      --soft:   rgba(255,255,255,0.22);
       --red:    #CC1020;
+      --green:  #2ecc71;
     }
 
     html, body {
       background: var(--black);
       color: var(--white);
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
-    /* ══════════════════════ HEADER ══════════════════════ */
+    /* ══════════ HEADER ══════════ */
     header {
       position: fixed;
       inset: 0 0 auto;
@@ -34,20 +35,29 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 32px;
-      transition: background .35s, border-color .35s;
+      gap: 24px;
+      transition: background .3s, border-color .3s;
     }
     header.solid {
-      background: rgba(8,8,8,.94);
+      background: rgba(8,8,8,.96);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,255,255,.06);
     }
 
-    /* Logo */
-    .logo { height: 26px; flex-shrink: 0; }
+    .logo-img {
+      height: 28px;
+      width: auto;
+      flex-shrink: 0;
+      display: block;
+    }
 
-    /* Nav */
-    nav { display: flex; gap: 36px; align-items: center; }
+    nav {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+    }
     nav a {
       color: var(--gray);
       text-decoration: none;
@@ -55,15 +65,15 @@
       font-weight: 500;
       letter-spacing: .01em;
       transition: color .18s;
+      white-space: nowrap;
     }
     nav a:hover { color: var(--white); }
 
-    /* Globe */
     .globe-wrap { position: relative; flex-shrink: 0; }
     .globe-btn {
       display: flex; align-items: center; gap: 5px;
       background: transparent;
-      border: 1px solid rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.13);
       border-radius: 99px;
       padding: 5px 10px 5px 8px;
       color: var(--gray); font-size: 12px;
@@ -72,13 +82,12 @@
     }
     .globe-btn svg { width: 13px; height: 13px; }
     .globe-btn:hover { border-color: rgba(255,255,255,.3); color: #fff; }
-    .caret { font-size: 8px; transition: transform .18s; display: inline-block; }
+    .caret { font-size: 8px; transition: transform .18s; }
     .globe-wrap.open .caret { transform: rotate(180deg); }
-
     .globe-drop {
       position: absolute; top: calc(100% + 9px); right: 0;
-      background: #fff; border-radius: 11px; padding: 6px;
-      box-shadow: 0 20px 56px rgba(0,0,0,.5);
+      background: #fff; border-radius: 12px; padding: 6px;
+      box-shadow: 0 20px 56px rgba(0,0,0,.45);
       min-width: 150px; opacity: 0; pointer-events: none;
       transform: translateY(-8px) scale(.95);
       transition: all .18s cubic-bezier(.34,1.56,.64,1);
@@ -94,14 +103,12 @@
       font-family: inherit; transition: background .1s;
     }
     .country:hover { background: #f3f2f8; }
-    .country .flag { font-size: 16px; }
 
-    /* Header right */
-    .h-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .h-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .btn-in {
       background: transparent;
       border: 1px solid rgba(255,255,255,.14);
-      color: rgba(255,255,255,.65);
+      color: rgba(255,255,255,.7);
       padding: 7px 18px; border-radius: 7px;
       font-size: 13px; font-weight: 600; font-family: inherit;
       cursor: pointer; white-space: nowrap; transition: all .18s;
@@ -115,294 +122,305 @@
     }
     .btn-ct:hover { background: #b80d1a; }
 
-    /* ══════════════════════ HERO ══════════════════════ */
     .hero {
-      width: 100%; min-height: 100vh;
+      min-height: 100vh;
+      padding-top: 64px;
       display: grid;
-      grid-template-columns: 52% 48%;
-      position: relative;
+      grid-template-columns: 48% 52%;
     }
 
-    /* ── LEFT COLUMN ── */
     .col-left {
-      padding: 120px 56px 64px;
+      padding: 72px 56px 64px 64px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      position: relative;
-      z-index: 2;
     }
 
     .eyebrow {
       display: flex; align-items: center; gap: 12px;
-      font-size: 10.5px; font-weight: 700;
+      font-size: 10px; font-weight: 700;
       letter-spacing: 2.5px; text-transform: uppercase;
-      color: var(--dimmer); margin-bottom: 24px;
+      color: var(--soft); margin-bottom: 28px;
     }
-    .eyebrow-line { width: 28px; height: 1px; background: var(--dimmer); }
-
-    /* The massive headline */
-    .headline {
-      font-size: clamp(64px, 8.5vw, 124px);
-      font-weight: 900;
-      line-height: .92;
-      letter-spacing: -3.5px;
-      text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 40px;
-    }
-    .headline .line-label {
+    .eyebrow::before {
+      content: '';
       display: block;
-      font-size: clamp(18px, 2.2vw, 28px);
-      font-weight: 400;
-      color: var(--gray);
-      letter-spacing: 0;
-      text-transform: none;
-      margin-bottom: 12px;
+      width: 24px; height: 1px;
+      background: var(--soft);
+      flex-shrink: 0;
     }
-    .headline .red { color: var(--red); }
-    /* Outlined text — the "menos" effect */
-    .headline .outline {
-      -webkit-text-stroke: 2px rgba(255,255,255,.55);
+
+    h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(52px, 7vw, 96px);
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -1px;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+    h1 .outline {
+      -webkit-text-stroke: 1.5px rgba(255,255,255,.55);
       color: transparent;
     }
+    h1 em {
+      font-style: italic;
+      color: var(--red);
+    }
 
-    .hero-desc {
-      font-size: 15px;
+    .hero-sub {
+      font-size: 15.5px;
       line-height: 1.75;
       color: var(--gray);
-      max-width: 400px;
-      font-weight: 500;
-      margin-bottom: 36px;
+      max-width: 420px;
+      font-weight: 400;
+      margin-bottom: 40px;
     }
 
-    .cta-row {
-      display: flex; align-items: center; gap: 24px; margin-bottom: 56px;
-    }
+    .cta-row { display: flex; align-items: center; gap: 22px; margin-bottom: 56px; }
     .cta-prim {
-      background: var(--white); color: #0a0a14;
-      border: none; padding: 15px 42px;
+      background: var(--white); color: #0a0a12;
+      border: none; padding: 15px 40px;
       border-radius: 8px; font-size: 14px;
-      font-weight: 800; font-family: inherit;
+      font-weight: 700; font-family: inherit;
       cursor: pointer; letter-spacing: -.1px;
       transition: all .22s;
     }
-    .cta-prim:hover { background: #ede6ff; transform: translateY(-2px); }
-    .cta-sec {
-      background: none; border: none; color: var(--gray);
-      font-size: 13.5px; font-weight: 600; font-family: inherit;
+    .cta-link {
+      background: none; border: none;
+      color: var(--gray); font-size: 13.5px;
+      font-weight: 600; font-family: inherit;
       cursor: pointer; display: flex; align-items: center; gap: 8px;
       transition: color .18s;
     }
-    .cta-sec .arr { transition: transform .18s; }
-    .cta-sec:hover { color: var(--white); }
-    .cta-sec:hover .arr { transform: translateX(5px); }
+    .cta-link .arr { transition: transform .18s; }
+    .cta-link:hover { color: var(--white); }
+    .cta-link:hover .arr { transform: translateX(5px); }
 
-    /* Trust */
     .trust {
-      display: flex; align-items: center; gap: 0;
-      padding-top: 36px; border-top: 1px solid rgba(255,255,255,.07);
+      display: flex; align-items: flex-start; gap: 0;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,.07);
     }
-    .t-item { padding-right: 28px; margin-right: 28px; border-right: 1px solid rgba(255,255,255,.07); }
-    .t-item:last-child { border-right: none; padding-right: 0; margin-right: 0; }
-    .t-num { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -.5px; line-height: 1.1; }
+    .t-item {
+      padding-right: 28px; margin-right: 28px;
+      border-right: 1px solid rgba(255,255,255,.07);
+    }
+    .t-item:last-child { border-right: none; }
+    .t-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px; font-weight: 400;
+      color: var(--white); letter-spacing: -.5px;
+      line-height: 1.1; margin-bottom: 5px;
+      display: flex; align-items: center; gap: 5px;
+    }
     .t-stars { color: #FFD700; font-size: 11px; }
-    .t-lbl { font-size: 10px; color: var(--dimmer); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+    .t-lbl {
+      font-size: 10px; color: var(--soft);
+      font-weight: 600; text-transform: uppercase; letter-spacing: .5px;
+    }
 
-    /* ── RIGHT COLUMN ── */
     .col-right {
-      position: relative;
-      overflow: hidden;
+      padding: 72px 48px 48px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    /* Photo mosaic */
-    .mosaic {
-      position: absolute;
-      inset: 56px 40px 40px -20px;
+    .photo-mosaic {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      grid-template-rows: 160px 140px;
+      gap: 10px;
+      flex-shrink: 0;
     }
-
     .ph {
-      position: absolute;
       overflow: hidden;
-      background: #111;
+      background: #1a1a1a;
+      position: relative;
     }
     .ph img {
       width: 100%; height: 100%;
       object-fit: cover;
-      filter: brightness(.82) contrast(1.08) saturate(.9);
+      filter: brightness(.82) contrast(1.06) saturate(.88);
       transition: transform .7s ease;
       display: block;
     }
     .ph:hover img { transform: scale(1.05); }
+    .ph-main { grid-row: 1 / 3; border-radius: 18px 18px 60px 18px; }
+    .ph-b { border-radius: 50%; align-self: start; }
+    .ph-c { border-radius: 10px 40px 10px 10px; }
 
-    /* Photo shapes — mimic the reference collage */
-    .ph-a {
-      top: 0; left: 0;
-      width: 62%; height: 52%;
-      border-radius: 16px 16px 64px 16px;
-    }
-    .ph-b {
-      top: 0; right: 0;
-      width: 34%; height: 37%;
-      border-radius: 50%;
-    }
-    .ph-c {
-      top: 39%; right: 0;
-      width: 52%; height: 46%;
-      border-radius: 64px 16px 16px 16px;
-    }
-    .ph-d {
-      bottom: 0; left: 0;
-      width: 36%; height: 34%;
-      border-radius: 16px;
-    }
-
-    /* Small "EN VIVO" overlay badge on main photo */
-    .ph-live-badge {
+    .ph-badge {
       position: absolute;
-      bottom: 16px; left: 16px;
-      background: rgba(8,8,8,.82);
+      bottom: 14px; left: 14px;
+      background: rgba(8,8,8,.8);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.08);
       border-radius: 99px;
       padding: 5px 12px 5px 8px;
       display: flex; align-items: center; gap: 7px;
-      font-size: 9.5px; font-weight: 700;
-      color: rgba(255,255,255,.55);
-      letter-spacing: .3px;
-      pointer-events: none;
+      font-size: 9.5px; font-weight: 600;
+      color: rgba(255,255,255,.5);
     }
-    .live-dot { width: 5px; height: 5px; background: #2ecc71; border-radius: 50%; animation: blink 2s infinite; }
+    .live-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
 
-    /* Floating dashboard cards */
-    .fcard {
-      position: absolute;
-      background: rgba(10,10,16,.88);
-      backdrop-filter: blur(18px);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 14px;
-      box-shadow: 0 20px 56px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.05) inset;
-      font-family: 'Montserrat', sans-serif;
+    .mockup-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex: 1;
     }
 
-    /* Card: price suggestion */
-    .fc-price {
-      bottom: 56px; left: -48px;
-      width: 256px; padding: 16px 18px;
-      animation: rise .5s ease .4s both;
+    .browser {
+      flex: 1; min-width: 0;
+      background: rgba(14,14,22,.92);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 56px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.05) inset;
     }
-    .fc-head {
+    .browser-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.03);
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .b-dots { display: flex; gap: 5px; }
+    .bdot { width: 10px; height: 10px; border-radius: 50%; }
+    .bdot-r { background: #ff5f57; }
+    .bdot-y { background: #febc2e; }
+    .bdot-g { background: #28c840; }
+    .b-url {
+      flex: 1; background: rgba(255,255,255,.06);
+      border-radius: 5px; padding: 4px 10px;
+      font-size: 10px; color: rgba(255,255,255,.3);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .dash { padding: 14px; background: #f7f6fb; }
+    .dash-topbar {
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 10px; padding-bottom: 8px;
+      border-bottom: 1px solid #eceaf5;
     }
-    .fc-title { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.3); text-transform: uppercase; letter-spacing: 1px; }
-    .fc-live { display: flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 700; color: #2ecc71; }
-
-    .fc-alert {
+    .dash-brand {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 700; color: #888; font-family: 'Inter', sans-serif;
+    }
+    .dash-chip {
+      width: 18px; height: 18px; background: #6B4C9A; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 7px; font-weight: 900; color: #fff;
+    }
+    .dash-live-pill {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 9px; font-weight: 700; color: #2ecc71;
+      background: rgba(46,204,113,.1); padding: 3px 8px; border-radius: 99px;
+      font-family: 'Inter', sans-serif;
+    }
+    .dlive-dot { width: 4px; height: 4px; background: #2ecc71; border-radius: 50%; animation: blink 1.8s infinite; }
+    .dash-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 9px; }
+    .dstat { background: #fff; border: 1px solid #eceaf5; border-radius: 8px; padding: 9px 10px; }
+    .dstat-lbl { font-size: 8px; color: #bbb; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px; font-family: 'Inter', sans-serif; }
+    .dstat-val { font-size: 18px; font-weight: 800; color: #1a1a2e; font-variant-numeric: tabular-nums; font-family: 'Inter', sans-serif; }
+    .dstat-chg { font-size: 9px; font-weight: 700; color: #2ecc71; margin-top: 1px; font-family: 'Inter', sans-serif; }
+    .dash-alert {
       display: flex; align-items: center; gap: 8px;
-      background: rgba(204,16,32,.1);
-      border: 1px solid rgba(204,16,32,.18);
-      border-radius: 8px; padding: 8px 10px;
-      margin-bottom: 12px;
+      background: rgba(204,16,32,.08); border: 1px solid rgba(204,16,32,.18);
+      border-radius: 8px; padding: 8px 10px; margin-bottom: 9px;
     }
-    .fc-alert-icon { font-size: 13px; }
-    .fc-alert-txt { font-size: 10px; font-weight: 700; color: #e8707a; }
+    .d-alert-icon { font-size: 13px; }
+    .d-alert-title { font-size: 10.5px; font-weight: 800; color: #cc1020; font-family: 'Inter', sans-serif; }
+    .d-alert-sub { font-size: 9px; color: rgba(0,0,0,.4); font-family: 'Inter', sans-serif; }
+    .d-alert-badge {
+      margin-left: auto; background: var(--red); color: #fff;
+      font-size: 7.5px; font-weight: 800; padding: 2px 7px;
+      border-radius: 99px; white-space: nowrap; font-family: 'Inter', sans-serif;
+    }
+    .dash-suggest { background: #fff; border: 1px solid #eceaf5; border-radius: 8px; padding: 11px 12px; margin-bottom: 9px; }
+    .sug-lbl { font-size: 8.5px; color: #bbb; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 7px; font-family: 'Inter', sans-serif; }
+    .sug-price-row { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; margin-bottom: 5px; }
+    .sug-old { font-size: 10px; color: #ccc; text-decoration: line-through; font-family: 'Inter', sans-serif; }
+    .sug-new { font-size: 22px; font-weight: 900; color: #111; letter-spacing: -.8px; font-variant-numeric: tabular-nums; font-family: 'Inter', sans-serif; }
+    .sug-pct { font-size: 11px; font-weight: 800; color: #2ecc71; background: rgba(46,204,113,.1); padding: 2px 8px; border-radius: 99px; font-family: 'Inter', sans-serif; }
+    .sug-meta { font-size: 8.5px; color: #aaa; line-height: 1.5; font-family: 'Inter', sans-serif; }
+    .sug-meta strong { color: #555; }
+    .dash-btns { display: flex; gap: 7px; }
+    .dbtn { flex: 1; padding: 9px 6px; border-radius: 7px; font-size: 11px; font-weight: 700; cursor: pointer; border: none; transition: all .18s; font-family: 'Inter', sans-serif; }
+    .dbtn-rej { background: transparent; border: 1px solid #e0ddf0; color: #999; }
+    .dbtn-app { background: #111; color: #fff; }
 
-    .fc-prow {
-      display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap;
-      margin-bottom: 5px;
+    .phone {
+      width: 118px; flex-shrink: 0;
+      background: #0a0a14; border-radius: 28px;
+      box-shadow: 0 24px 56px rgba(0,0,0,.6), 0 0 0 1.5px rgba(204,16,32,.35), 0 0 0 4px rgba(204,16,32,.08), 0 0 0 5px rgba(0,0,0,.5);
+      overflow: hidden;
     }
-    .fc-old { font-size: 10px; color: rgba(255,255,255,.22); text-decoration: line-through; }
-    .fc-new { font-size: 21px; font-weight: 900; color: #fff; letter-spacing: -1px; }
-    .fc-pct {
-      font-size: 11px; font-weight: 800; color: #2ecc71;
-      background: rgba(46,204,113,.1); padding: 2px 8px; border-radius: 99px;
-    }
-    .fc-detail { font-size: 9px; color: rgba(255,255,255,.25); line-height: 1.6; margin-bottom: 12px; }
-    .fc-detail strong { color: rgba(255,255,255,.5); }
-    .fc-btns { display: flex; gap: 6px; }
-    .fc-b {
-      flex: 1; padding: 8px; border-radius: 7px;
-      font-size: 11px; font-weight: 700; font-family: inherit;
-      cursor: pointer; border: none; transition: all .18s;
-    }
-    .fc-b-rej { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09); color: rgba(255,255,255,.4); }
-    .fc-b-rej:hover { background: rgba(255,255,255,.1); color: rgba(255,255,255,.7); }
-    .fc-b-app { background: #fff; color: #0a0a14; }
-    .fc-b-app:hover { background: #e8f8f0; }
+    .phone-island { height: 22px; background: #0a0a14; display: flex; align-items: center; justify-content: center; }
+    .phone-pill { width: 52px; height: 12px; background: #000; border-radius: 10px; }
+    .phone-screen { background: #f8f7fc; margin: 0 2.5px; padding: 9px; }
+    .phone-status { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+    .ptime { font-size: 8px; font-weight: 800; color: #111; font-family: 'Inter', sans-serif; }
+    .picons { font-size: 7px; color: #888; font-family: 'Inter', sans-serif; }
+    .phone-notif { background: linear-gradient(135deg, #f0e8ff, #fff4f3); border-radius: 7px; padding: 8px 9px; margin-bottom: 8px; border-left: 2.5px solid #6B4C9A; }
+    .pn-app { font-size: 7px; font-weight: 700; color: #6B4C9A; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; font-family: 'Inter', sans-serif; }
+    .pn-title { font-size: 9.5px; font-weight: 800; color: #111; margin-bottom: 2px; font-family: 'Inter', sans-serif; }
+    .pn-text { font-size: 8px; color: #666; line-height: 1.4; font-family: 'Inter', sans-serif; }
+    .phone-mini-chart { background: #fff; border-radius: 7px; padding: 7px 8px 4px; margin-bottom: 8px; border: 1px solid #eceaf5; }
+    .pmc-lbl { font-size: 7px; color: #bbb; text-transform: uppercase; letter-spacing: .3px; margin-bottom: 5px; font-family: 'Inter', sans-serif; }
+    .pmc-bars { display: flex; align-items: flex-end; gap: 3px; height: 36px; }
+    .pmb { flex: 1; border-radius: 2px 2px 0 0; background: rgba(107,76,154,.35); }
+    .pmb.hot { background: var(--red); position: relative; }
+    .pmb.hot::after { content: '\u2191'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 8px; color: var(--red); font-weight: 900; }
+    .phone-actions { display: flex; gap: 5px; }
+    .pa { flex: 1; padding: 6px; border-radius: 6px; font-size: 8.5px; font-weight: 700; text-align: center; border: none; cursor: pointer; font-family: 'Inter', sans-serif; }
+    .pa-rej { background: #eee; color: #888; }
+    .pa-app { background: #111; color: #fff; }
+    .phone-home { height: 18px; background: #0a0a14; display: flex; align-items: center; justify-content: center; margin: 2.5px 2.5px 0; border-radius: 0 0 2px 2px; }
+    .home-bar { width: 36px; height: 2.5px; background: rgba(255,255,255,.18); border-radius: 2px; }
 
-    /* Card: pickup stat */
-    .fc-stat {
-      top: 16px; right: -16px;
-      width: 148px; padding: 14px 16px;
-      animation: rise .5s ease .55s both;
-    }
-    .fcs-val { font-size: 32px; font-weight: 900; color: #2ecc71; letter-spacing: -1.5px; line-height: 1; margin-bottom: 2px; }
-    .fcs-lbl { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.28); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
-    .fcs-sub { font-size: 10px; color: rgba(255,255,255,.4); display: flex; align-items: center; gap: 5px; }
-
-    @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
-    /* ══════════════════════ RESPONSIVE ══════════════════════ */
-    @media (max-width: 1024px) {
+    @media (max-width: 1100px) {
       header { padding: 0 28px; }
-      .col-left { padding: 110px 40px 56px; }
-      .headline { font-size: 80px; letter-spacing: -2.5px; }
+      .col-left { padding: 72px 36px 56px 40px; }
+      .col-right { padding: 72px 32px 48px 12px; }
+      h1 { font-size: 72px; }
     }
-
-    @media (max-width: 860px) {
+    @media (max-width: 900px) {
+      nav a:nth-child(n+3) { display: none; }
       .hero { grid-template-columns: 1fr; }
-      .col-right { height: 56vw; min-height: 340px; order: -1; }
-      .mosaic { inset: 0; }
-      .ph-a { width: 60%; height: 54%; }
-      .ph-b { width: 34%; height: 38%; }
-      .ph-c { right: 0; width: 50%; }
-      .ph-d { bottom: 0; }
-      .fc-price { left: 12px; bottom: 12px; width: 220px; }
-      .fc-stat { right: 8px; top: 8px; }
-      .col-left { padding: 48px 32px 56px; }
-      .headline { font-size: 64px; letter-spacing: -2px; }
+      .col-right { order: -1; padding: 80px 24px 0 24px; gap: 16px; }
+      .photo-mosaic { grid-template-rows: 130px 110px; }
+      .col-left { padding: 32px 24px 56px; }
+      h1 { font-size: 56px; }
     }
-
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       header { padding: 0 16px; height: 58px; }
       nav { display: none; }
       .btn-in { display: none; }
-      .hero { grid-template-columns: 1fr; }
-      .col-right { height: 70vw; min-height: 280px; }
-      .col-left { padding: 40px 20px 56px; }
-      .headline { font-size: 48px; letter-spacing: -1.5px; }
-      .headline .line-label { font-size: 15px; }
-      .hero-desc { font-size: 14px; }
+      .hero { padding-top: 58px; }
+      .col-right { padding: 0 16px; }
+      .photo-mosaic { grid-template-columns: 1.4fr 1fr; grid-template-rows: 110px 90px; gap: 8px; }
+      .mockup-row { gap: 10px; }
+      .phone { width: 100px; }
+      .col-left { padding: 28px 16px 48px; }
+      h1 { font-size: 44px; letter-spacing: -.5px; }
+      .hero-sub { font-size: 14.5px; }
       .trust { flex-wrap: wrap; gap: 16px; }
       .t-item { border-right: none !important; padding-right: 0 !important; margin-right: 0 !important; }
+      .cta-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+    @media (max-width: 400px) {
+      h1 { font-size: 38px; }
+      .photo-mosaic { grid-template-rows: 95px 80px; }
     }
   </style>
 </head>
 <body>
-
-  <!-- ══════════════ HEADER ══════════════ -->
   <header id="hdr">
-
-    <!--
-      LOGO:
-      Opción A — SVG inline (siempre funciona, sin archivos externos):
-      Opción B — reemplazar todo el <svg> con: <img class="logo" src="pxsol-logo.png" alt="PXSOL">
-                 y poner el PNG en la misma carpeta que este HTML.
-    -->
-    <svg class="logo" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
-      <text y="132"
-        font-family="'Montserrat','Century Gothic','Arial Black',sans-serif"
-        font-size="142" font-weight="900" fill="#ffffff">P</text>
-      <!-- X: dos rombos cruzados con puntas afiladas -->
-      <polygon points="112,-4 192,76 218,176 138,96" fill="#CC1020"/>
-      <polygon points="218,-4 192,80 110,176 136,72" fill="#CC1020"/>
-      <text x="228" y="132"
-        font-family="'Montserrat','Century Gothic','Arial Black',sans-serif"
-        font-size="142" font-weight="900" fill="#ffffff">SOL</text>
-    </svg>
-
+    <img class="logo-img" src="LOGO PXSOL.svg" alt="PXSOL">
     <nav>
       <a href="#">Software para hoteles</a>
       <a href="#">Agencias</a>
@@ -410,186 +428,140 @@
       <a href="#">Precios</a>
       <a href="#">Nosotros</a>
     </nav>
-
     <div class="globe-wrap" id="gw">
       <button class="globe-btn" onclick="toggleGlobe(event)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        <span class="caret">▾</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span class="caret">&#9662;</span>
       </button>
       <div class="globe-drop" id="gd">
-        <div class="country"><span class="flag">🇦🇷</span> Argentina</div>
-        <div class="country"><span class="flag">🇨🇱</span> Chile</div>
-        <div class="country"><span class="flag">🇨🇴</span> Colombia</div>
-        <div class="country"><span class="flag">🇲🇽</span> México</div>
-        <div class="country"><span class="flag">🇺🇾</span> Uruguay</div>
-        <div class="country"><span class="flag">🇵🇪</span> Perú</div>
+        <div class="country"><span>&#127462;&#127479;</span> Argentina</div>
+        <div class="country"><span>&#127464;&#127473;</span> Chile</div>
+        <div class="country"><span>&#127464;&#127476;</span> Colombia</div>
+        <div class="country"><span>&#127474;&#127485;</span> M&eacute;xico</div>
+        <div class="country"><span>&#127482;&#127486;</span> Uruguay</div>
+        <div class="country"><span>&#127477;&#127466;</span> Per&uacute;</div>
       </div>
     </div>
-
-    <div class="h-right">
-      <button class="btn-in">Iniciar sesión</button>
+    <div class="h-actions">
+      <button class="btn-in">Iniciar sesi&oacute;n</button>
       <button class="btn-ct">Cotizar</button>
     </div>
   </header>
 
-  <!-- ══════════════ HERO ══════════════ -->
   <section class="hero">
-
-    <!-- ── LEFT: Copy ── -->
     <div class="col-left">
-
       <div>
-        <div class="eyebrow">
-          <span class="eyebrow-line"></span>
-          Revenue Management System
-        </div>
-
-        <h1 class="headline">
-          <span class="line-label">Software para hoteles</span>
-          Más<br/>
-          <span class="red">revenue.</span><br/>
-          <span class="outline">Menos</span><br/>
-          trabajo.
-        </h1>
-
-        <p class="hero-desc">
-          Nuestro RMS analiza demanda y competencia cada día. Te propone el precio exacto dentro de tus límites. Vos solo aprobás.
-        </p>
-
+        <div class="eyebrow">Revenue Management System</div>
+        <h1>M&aacute;s<br><em>reservas.</em><br><span class="outline">Menos</span><br>trabajo.</h1>
+        <p class="hero-sub">Nuestro RMS analiza demanda y competencia cada d&iacute;a. Te propone el precio exacto dentro de tus l&iacute;mites. Vos solo aprob&aacute;s.</p>
         <div class="cta-row">
           <button class="cta-prim">Probar ahora</button>
-          <button class="cta-sec">Ver demo <span class="arr">→</span></button>
+          <button class="cta-link">Ver demo en vivo <span class="arr">&rarr;</span></button>
         </div>
       </div>
-
       <div class="trust">
-        <div class="t-item">
-          <div class="t-num">+1.800</div>
-          <div class="t-lbl">Hoteles activos</div>
-        </div>
-        <div class="t-item">
-          <div class="t-num">4.8 <span class="t-stars">★★★★★</span></div>
-          <div class="t-lbl">Valoración</div>
-        </div>
-        <div class="t-item">
-          <div class="t-num">+12%</div>
-          <div class="t-lbl">Revenue promedio</div>
-        </div>
+        <div class="t-item"><div class="t-num">+1.800</div><div class="t-lbl">Hoteles activos</div></div>
+        <div class="t-item"><div class="t-num">4.8 <span class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div><div class="t-lbl">Valoraci&oacute;n</div></div>
+        <div class="t-item"><div class="t-num">+12%</div><div class="t-lbl">Revenue promedio</div></div>
       </div>
     </div>
 
-    <!-- ── RIGHT: Photo collage + floating UI ── -->
     <div class="col-right">
-      <div class="mosaic">
+      <div class="photo-mosaic">
+        <div class="ph ph-main">
+          <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=900&q=80&fit=crop&crop=center" alt="Hotel exterior">
+          <div class="ph-badge"><div class="live-dot"></div>pms.pxsol.com</div>
+        </div>
+        <div class="ph ph-b"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=500&q=80&fit=crop&crop=center" alt="Hotel pool"></div>
+        <div class="ph ph-c"><img src="https://images.unsplash.com/photo-1455587734955-081b22074882?w=600&q=80&fit=crop&crop=center" alt="Hotel interior"></div>
+      </div>
 
-        <!--
-          FOTOS: Usando Unsplash como placeholder.
-          Para producción, reemplazá los src con tus fotos reales de hotel.
-          Necesitás conexión a internet para que carguen los placeholders.
-        -->
-        <div class="ph ph-a">
-          <img
-            src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=900&q=80&fit=crop&crop=center"
-            alt="Hotel lobby">
-          <div class="ph-live-badge">
-            <div class="live-dot"></div>
-            pms.pxsol.com · EN VIVO
+      <div class="mockup-row">
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="b-dots"><div class="bdot bdot-r"></div><div class="bdot bdot-y"></div><div class="bdot bdot-g"></div></div>
+            <div class="b-url">&#128274; pms.pxsol.com/rms</div>
+          </div>
+          <div class="dash">
+            <div class="dash-topbar">
+              <div class="dash-brand"><div class="dash-chip">PX</div>RMS &middot; Agente IA</div>
+              <div class="dash-live-pill"><div class="dlive-dot"></div>EN VIVO</div>
+            </div>
+            <div class="dash-stats">
+              <div class="dstat"><div class="dstat-lbl">Pickup hoy</div><div class="dstat-val">+24%</div><div class="dstat-chg">&uarr; vs hist&oacute;rico</div></div>
+              <div class="dstat"><div class="dstat-lbl">Set comp.</div><div class="dstat-val">+8%</div><div class="dstat-chg">&uarr; vs ayer</div></div>
+            </div>
+            <div class="dash-alert">
+              <span class="d-alert-icon">&#9889;</span>
+              <div><div class="d-alert-title">Demanda detectada</div><div class="d-alert-sub">pickup +24% vs hist&oacute;rico &middot; set comp. +8%</div></div>
+              <div class="d-alert-badge">NUEVO</div>
+            </div>
+            <div class="dash-suggest">
+              <div class="sug-lbl">Sugerencia &rsaquo; S&aacute;b 14 dic</div>
+              <div class="sug-price-row">
+                <span class="sug-old">ARS 96.000</span>
+                <span style="color:#ddd;font-size:11px;">&rarr;</span>
+                <span class="sug-new" id="pn">ARS 104.190</span>
+                <span class="sug-pct" id="pp">+8.5%</span>
+              </div>
+              <div class="sug-meta">Margen estimado: <strong>+ARS 384k</strong> &middot; 3 fechas &middot; Booking + Expedia</div>
+            </div>
+            <div class="dash-btns">
+              <button class="dbtn dbtn-rej">Rechazar</button>
+              <button class="dbtn dbtn-app">&#10003; Aprobar sugerencia</button>
+            </div>
           </div>
         </div>
 
-        <div class="ph ph-b">
-          <img
-            src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500&q=80&fit=crop&crop=center"
-            alt="Hotel room">
-        </div>
-
-        <div class="ph ph-c">
-          <img
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80&fit=crop&crop=center"
-            alt="Hotel pool">
-        </div>
-
-        <div class="ph ph-d">
-          <img
-            src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=500&q=80&fit=crop&crop=center"
-            alt="Hotel detail">
-        </div>
-
-        <!-- Floating card: price suggestion -->
-        <div class="fcard fc-price">
-          <div class="fc-head">
-            <span class="fc-title">Agente IA · Sáb 14 dic</span>
-            <span class="fc-live"><div class="live-dot"></div> EN VIVO</span>
+        <div class="phone">
+          <div class="phone-island"><div class="phone-pill"></div></div>
+          <div class="phone-screen">
+            <div class="phone-status"><span class="ptime">9:41</span><span class="picons">&#9608;&#9608;&#9608; &#128011;</span></div>
+            <div class="phone-notif">
+              <div class="pn-app">PXSOL RMS</div>
+              <div class="pn-title">&#9889; Nueva sugerencia</div>
+              <div class="pn-text">S&aacute;b 14 dic &middot; Pickup +24% &middot; Subir a ARS 104.190</div>
+            </div>
+            <div class="phone-mini-chart">
+              <div class="pmc-lbl">Revenue semanal</div>
+              <div class="pmc-bars">
+                <div class="pmb" style="height:34%"></div><div class="pmb" style="height:50%"></div>
+                <div class="pmb" style="height:42%"></div><div class="pmb" style="height:63%"></div>
+                <div class="pmb hot" style="height:90%"></div>
+                <div class="pmb" style="height:58%"></div><div class="pmb" style="height:68%"></div>
+              </div>
+            </div>
+            <div class="phone-actions">
+              <button class="pa pa-rej">Rechazar</button>
+              <button class="pa pa-app">&#10003; Aprobar</button>
+            </div>
           </div>
-
-          <div class="fc-alert">
-            <span class="fc-alert-icon">⚡</span>
-            <span class="fc-alert-txt">Demanda +24% vs histórico</span>
-          </div>
-
-          <div class="fc-prow">
-            <span class="fc-old">ARS 96.000</span>
-            <span style="color:rgba(255,255,255,.18);font-size:12px">→</span>
-            <span class="fc-new" id="pn">ARS 104.190</span>
-            <span class="fc-pct" id="pp">+8.5%</span>
-          </div>
-          <div class="fc-detail">Margen estimado: <strong>+ARS 384k</strong> · 3 fechas · Booking + Expedia</div>
-
-          <div class="fc-btns">
-            <button class="fc-b fc-b-rej">Rechazar</button>
-            <button class="fc-b fc-b-app">✓ Aprobar</button>
-          </div>
+          <div class="phone-home"><div class="home-bar"></div></div>
         </div>
-
-        <!-- Floating card: stat -->
-        <div class="fcard fc-stat">
-          <div class="fcs-val">+24%</div>
-          <div class="fcs-lbl">Pickup hoy</div>
-          <div class="fcs-sub"><div class="live-dot"></div> vs histórico</div>
-        </div>
-
       </div>
     </div>
-
   </section>
 
   <script>
-    // Header transparency on scroll
     const hdr = document.getElementById('hdr');
-    const onScroll = () => hdr.classList.toggle('solid', window.scrollY > 10);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-
-    // Globe dropdown
-    function toggleGlobe(e) {
-      e.stopPropagation();
-      document.getElementById('gw').classList.toggle('open');
+    window.addEventListener('scroll', () => hdr.classList.toggle('solid', scrollY > 8), {passive:true});
+    function toggleGlobe(e) { e.stopPropagation(); document.getElementById('gw').classList.toggle('open'); }
+    document.addEventListener('click', () => document.getElementById('gw').classList.remove('open'));
+    const pnEl = document.getElementById('pn'), ppEl = document.getElementById('pp');
+    const FROM = 96000, TO = 104190, DUR = 2200;
+    let started = false;
+    function easeOut(t) { return 1 - Math.pow(1-t,4); }
+    function animatePrice() {
+      const t0 = performance.now();
+      (function step(now) {
+        const p = Math.min((now-t0)/DUR,1), e = easeOut(p);
+        const price = Math.round(FROM + (TO-FROM)*e);
+        pnEl.textContent = 'ARS ' + price.toLocaleString('es-AR');
+        ppEl.textContent = '+' + ((price-FROM)/FROM*100).toFixed(1) + '%';
+        if (p < 1) requestAnimationFrame(step);
+      })(performance.now());
     }
-    document.addEventListener('click', () => {
-      document.getElementById('gw').classList.remove('open');
-    });
-
-    // Animated price
-    const pnEl = document.getElementById('pn');
-    const ppEl = document.getElementById('pp');
-    const BASE = 96000, PEAK = 112000;
-
-    (function tick() {
-      const t = (Date.now() % 12000) / 12000;
-      let e;
-      if      (t < .4) { const r = t / .4;     e = r * r * .6; }
-      else if (t < .6) { e = .6 + ((t - .4) / .2) * .35; }
-      else              { const r = (t - .6) / .4; e = .95 - r * r * .2; }
-
-      const price = Math.round(BASE + (PEAK - BASE) * e);
-      const pct   = ((price - BASE) / BASE * 100).toFixed(1);
-      pnEl.textContent = `ARS ${price.toLocaleString('es-AR')}`;
-      ppEl.textContent = `+${pct}%`;
-      requestAnimationFrame(tick);
-    })();
-  </script>
+    new IntersectionObserver((e) => { if(e[0].isIntersecting && !started){started=true; setTimeout(animatePrice,800);} },{threshold:.3}).observe(pnEl);
+  <\/script>
 </body>
 </html>
