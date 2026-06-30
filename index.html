@@ -23,6 +23,10 @@
     @keyframes shimmer  { 0%{left:-100%} 100%{left:200%} }
     @keyframes badgePulse{ 0%,100%{box-shadow:0 0 0 0 rgba(204,16,32,.4)} 50%{box-shadow:0 0 0 4px rgba(204,16,32,0)} }
     @keyframes blink    { 0%,100%{opacity:1} 50%{opacity:.15} }
+    @keyframes rmsFloatY   { 0%,100%{transform:translate(-50%,-50%) rotate(-1.5deg) translateY(0)} 33%{transform:translate(-50%,-50%) rotate(-.5deg) translateY(-11px)} 66%{transform:translate(-50%,-50%) rotate(-2.5deg) translateY(5px)} }
+    @keyframes rmsFloatMob { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-6px) rotate(-1deg)} }
+    @keyframes rmsPop      { 0%{transform:translate(-50%,-50%) rotate(-1.5deg) scale(1)} 35%{transform:translate(-50%,-50%) rotate(-1.5deg) scale(1.1)} 65%{transform:translate(-50%,-50%) rotate(-1.5deg) scale(.96)} 100%{transform:translate(-50%,-50%) rotate(-1.5deg) scale(1)} }
+    @keyframes rmsPopMob   { 0%{transform:translateY(0) rotate(-1deg) scale(1)} 35%{transform:translateY(0) rotate(-1deg) scale(1.1)} 65%{transform:translateY(0) rotate(-1deg) scale(.96)} 100%{transform:translateY(0) rotate(-1deg) scale(1)} }
     .au{animation:fadeUp    .75s cubic-bezier(.22,1,.36,1) both}
     .ar{animation:fadeRight .75s cubic-bezier(.22,1,.36,1) both}
     .d1{animation-delay:.10s}.d2{animation-delay:.22s}.d3{animation-delay:.36s}.d4{animation-delay:.52s}.d5{animation-delay:.68s}
@@ -94,9 +98,28 @@
     /* ── HERO LAYOUT ── */
     .hero { min-height:100vh; padding-top:64px; display:grid; grid-template-columns:48% 52%; position:relative; z-index:1; }
 
+    /* ── FLOATING RMS ── */
+    .col-left, .col-right { position:relative; z-index:1; }
+    .h1-col { display:block; }
+    .rms-float {
+      position:absolute; left:48%; top:46%;
+      font-family:'DM Serif Display',Georgia,serif;
+      font-size:clamp(76px,9.5vw,136px);
+      font-style:italic; font-weight:400;
+      color:rgba(15,15,15,0.065);
+      pointer-events:auto; z-index:0;
+      animation:rmsFloatY 7s ease-in-out infinite;
+      user-select:none; cursor:pointer;
+      letter-spacing:-4px; line-height:1;
+      white-space:nowrap;
+      transition:color .4s cubic-bezier(.22,1,.36,1);
+      -webkit-font-smoothing:antialiased;
+    }
+    .rms-float:hover { color:rgba(15,15,15,0.14); }
+
     /* ── LEFT ── */
     .col-left { padding:72px 20px 64px 64px; display:flex; flex-direction:column; justify-content:space-between; }
-    .eyebrow { display:flex; align-items:center; gap:12px; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--soft); margin-bottom:28px; }
+    .eyebrow { display:flex; align-items:center; gap:12px; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:rgba(15,15,15,0.58); margin-bottom:28px; }
     .eyebrow::before { content:''; display:block; width:24px; height:1px; background:var(--soft); flex-shrink:0; }
     h1 { font-family:'DM Serif Display',Georgia,serif; font-size:clamp(48px,6.2vw,88px); font-weight:400; line-height:1.02; letter-spacing:-1px; color:var(--fg); margin-bottom:28px; }
     .hw { display:inline-block; transition:transform .32s cubic-bezier(.22,1,.36,1), color .25s; cursor:default; }
@@ -228,23 +251,52 @@
       .photo-mosaic { grid-template-rows: 160px 130px; }
       h1 { font-size: 60px; }
       .browser, .phone { animation: none; }
+      /* RMS: bloque decorativo entre secciones en mobile */
+      .rms-float {
+        position: relative; left: auto; top: auto;
+        transform: none;
+        animation: rmsFloatMob 7s ease-in-out infinite;
+        font-size: 72px;
+        text-align: center;
+        width: 100%;
+        display: block;
+        margin: -4px 0 -8px;
+        color: rgba(15,15,15,0.055);
+      }
     }
     @media (max-width: 640px) {
       header { padding: 0 16px; height: 56px; }
       .btn-in { display: none; }
+      .btn-ct { display: none; }
       .hero { padding-top: 56px; }
 
-      /* LEFT: centrado, titular grande */
+      /* LEFT: centrado, titular 2 columnas simétricas */
       .col-left { padding: 40px 20px 32px; text-align: center; }
       .eyebrow { justify-content: center; }
       .eyebrow::before { display: none; }
-      h1 { font-size: 54px; letter-spacing: -.5px; }
+      /* h1 grid 2-col: Más reservas | Menos trabajo */
+      h1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 10px;
+        font-size: clamp(26px, 8vw, 34px);
+        letter-spacing: -.5px;
+        text-align: left;
+        margin-bottom: 24px;
+      }
+      .h1-col { display: block; line-height: 1.06; }
+      .h1-right { text-align: right; }
+      .h1-right .hw:hover        { transform: translateX(-10px); }
+      .h1-right em.hw:hover      { transform: translateX(-10px); }
+      .h1-right .outline.hw:hover{ transform: translateX(-10px); -webkit-text-stroke:1.5px var(--red); color:transparent; }
       .hero-sub { margin: 0 auto 36px; text-align: left; }
       .cta-row { justify-content: center; flex-wrap: wrap; gap: 14px; }
       .rms-steps { text-align: left; }
       .trust { justify-content: center; flex-wrap: wrap; gap: 16px; }
       .t-item { border-right: none !important; padding-right: 0 !important; margin-right: 0 !important; text-align: center; }
       .t-num { justify-content: center; }
+      /* RMS: más pequeño en mobile < 640 */
+      .rms-float { font-size: 56px; margin: 0; }
 
       /* RIGHT: imágenes más compactas, SIN phone */
       .col-right { padding: 0 16px 36px; gap: 12px; }
@@ -254,7 +306,8 @@
       .mockup-row { gap: 0; }
     }
     @media (max-width: 380px) {
-      h1 { font-size: 44px; }
+      h1 { font-size: clamp(22px, 7vw, 28px); }
+      .rms-float { font-size: 44px; }
       .photo-mosaic { grid-template-rows: 105px 88px; }
     }
   </style>
@@ -315,10 +368,14 @@
       <div>
         <div class="eyebrow au d1">Revenue Management System</div>
         <h1>
-          <span class="hw au d2">Más</span><br>
-          <em class="hw au d3">reservas.</em><br>
-          <span class="hw outline au d4">Menos</span><br>
-          <span class="hw au d5">trabajo.</span>
+          <div class="h1-col">
+            <span class="hw au d2">Más</span><br>
+            <em class="hw au d3">reservas.</em>
+          </div>
+          <div class="h1-col h1-right">
+            <span class="hw outline au d4">Menos</span><br>
+            <span class="hw au d5">trabajo.</span>
+          </div>
         </h1>
         <p class="hero-sub au d3">
           Nuestro RMS analiza demanda y competencia cada día. Te propone el precio exacto dentro de tus límites. Vos solo aprobás.
@@ -360,6 +417,9 @@
         </div>
       </div>
     </div>
+
+    <!-- Floating RMS — desktop: absolute en el gap; mobile: separador decorativo -->
+    <div class="rms-float" id="rms-float" aria-hidden="true">RMS</div>
 
     <!-- RIGHT: fotos + mockups -->
     <div class="col-right">
@@ -431,4 +491,205 @@
             </div>
             <div class="phone-mini-chart">
               <div class="pmc-lbl">Revenue semanal</div>
-              <di
+              <div class="pmc-bars" id="bars">
+                <div class="pmb" data-h="34"></div>
+                <div class="pmb" data-h="50"></div>
+                <div class="pmb" data-h="42"></div>
+                <div class="pmb" data-h="63"></div>
+                <div class="pmb hot" data-h="90"></div>
+                <div class="pmb" data-h="58"></div>
+                <div class="pmb" data-h="68"></div>
+              </div>
+            </div>
+            <div class="phone-actions">
+              <button class="pa pa-rej">Rechazar</button>
+              <button class="pa pa-app">✓ Aprobar</button>
+            </div>
+          </div>
+          <div class="phone-home"><div class="home-bar"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // ── Header scroll
+    const hdr = document.getElementById('hdr');
+    window.addEventListener('scroll', () => hdr.classList.toggle('solid', scrollY > 8), {passive:true});
+    hdr.classList.toggle('solid', scrollY > 8);
+
+    // ── Globe dropdown
+    document.getElementById('gw').querySelector('.globe-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.getElementById('gw').classList.toggle('open');
+    });
+
+    // ── Hamburger
+    const ham = document.getElementById('ham');
+    const mobNav = document.getElementById('mob-nav');
+    function toggleHam(e) {
+      e.stopPropagation();
+      ham.classList.toggle('open');
+      mobNav.classList.toggle('open');
+    }
+    ham.addEventListener('click', toggleHam);
+    ham.addEventListener('touchend', function(e){ e.preventDefault(); toggleHam(e); });
+    mobNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      ham.classList.remove('open'); mobNav.classList.remove('open');
+    }));
+
+    // ── Close dropdowns on outside tap/click (iOS-compatible)
+    function closeAll(e) {
+      if (!e.target.closest('#gw')) document.getElementById('gw').classList.remove('open');
+      if (!e.target.closest('#ham') && !e.target.closest('#mob-nav')) {
+        ham.classList.remove('open'); mobNav.classList.remove('open');
+      }
+    }
+    document.addEventListener('click', closeAll);
+    document.addEventListener('touchstart', function(e){
+      // Only fire if not touching the ham or mob-nav
+      if (!e.target.closest('#ham') && !e.target.closest('#mob-nav') && !e.target.closest('#gw')) {
+        ham.classList.remove('open'); mobNav.classList.remove('open');
+        document.getElementById('gw').classList.remove('open');
+      }
+    }, {passive: true});
+
+    // ── Price animation (suave, una vez)
+    const pnEl = document.getElementById('pn'), ppEl = document.getElementById('pp');
+    let pStarted = false;
+    function easeOut(t) { return 1 - Math.pow(1-t, 4); }
+    function animatePrice() {
+      const FROM=96000, TO=104190, DUR=2200, t0=performance.now();
+      (function step(now) {
+        const p=Math.min((now-t0)/DUR,1), e=easeOut(p), price=Math.round(FROM+(TO-FROM)*e);
+        pnEl.textContent='ARS '+price.toLocaleString('es-AR');
+        ppEl.textContent='+'+((price-FROM)/FROM*100).toFixed(1)+'%';
+        if(p<1) requestAnimationFrame(step);
+      })(performance.now());
+    }
+    new IntersectionObserver((en)=>{ if(en[0].isIntersecting&&!pStarted){pStarted=true;setTimeout(animatePrice,600);} },{threshold:.3}).observe(pnEl);
+
+    // ── Chart bars staggered
+    let bStarted = false;
+    function animateBars() {
+      document.querySelectorAll('#bars .pmb').forEach((b,i)=>{
+        setTimeout(()=>{ b.style.height=b.dataset.h+'%'; if(b.classList.contains('hot')) setTimeout(()=>b.classList.add('rdy'),650); },i*85);
+      });
+    }
+    new IntersectionObserver((en)=>{ if(en[0].isIntersecting&&!bStarted){bStarted=true;setTimeout(animateBars,400);} },{threshold:.4}).observe(document.getElementById('bars'));
+
+    // ── Floating RMS interaction
+    (function(){
+      var rf = document.getElementById('rms-float');
+      if (!rf) return;
+      var timer;
+      function pop() {
+        var isMob = window.innerWidth <= 900;
+        rf.style.animation = 'none';
+        void rf.offsetWidth;
+        rf.style.animation = (isMob ? 'rmsPopMob' : 'rmsPop') + ' .55s cubic-bezier(.22,1,.36,1) both';
+        clearTimeout(timer);
+        timer = setTimeout(function(){
+          rf.style.animation = '';
+        }, 620);
+      }
+      rf.addEventListener('click', pop);
+      rf.addEventListener('touchstart', function(){
+        rf.style.color = 'rgba(15,15,15,0.18)';
+      }, {passive:true});
+      rf.addEventListener('touchend', function(){
+        pop();
+        setTimeout(function(){ rf.style.color = ''; }, 450);
+      }, {passive:true});
+    })();
+
+    // ── Video mute safety
+    document.querySelectorAll('video').forEach(v=>{ v.muted=true; v.volume=0; });
+
+    // ── PARTÍCULAS DE LUZ CÁLIDA
+    (function(){
+      var canvas = document.createElement('canvas');
+      canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
+      document.body.prepend(canvas);
+      var ctx = canvas.getContext('2d');
+      var W, H;
+
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+      resize();
+      window.addEventListener('resize', resize, {passive:true});
+
+      // Orbe grande con glow suave
+      function Orb() {
+        this.init = function() {
+          this.x = Math.random() * W;
+          this.y = Math.random() * H;
+          this.r = Math.random() * 55 + 28;
+          this.vx = (Math.random() - 0.5) * 0.18;
+          this.vy = (Math.random() - 0.5) * 0.14;
+          this.baseOp = Math.random() * 0.13 + 0.06;
+          this.t = Math.random() * Math.PI * 2;
+          this.sp = Math.random() * 0.003 + 0.001;
+        };
+        this.init();
+        this.update = function() {
+          this.x += this.vx; this.y += this.vy; this.t += this.sp;
+          if (this.x < -this.r*2 || this.x > W+this.r*2 || this.y < -this.r*2 || this.y > H+this.r*2) this.init();
+        };
+        this.draw = function() {
+          var op = this.baseOp * (0.6 + 0.4 * Math.sin(this.t));
+          var grd = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+          grd.addColorStop(0, 'rgba(210,155,60,' + op + ')');
+          grd.addColorStop(0.4, 'rgba(200,140,50,' + (op*0.55) + ')');
+          grd.addColorStop(1, 'rgba(190,130,45,0)');
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+          ctx.fillStyle = grd;
+          ctx.fill();
+        };
+      }
+
+      // Chispa pequeña con micro-glow
+      function Spark() {
+        this.init = function() {
+          this.x = Math.random() * W;
+          this.y = Math.random() * H;
+          this.r = Math.random() * 2.2 + 1.0;
+          this.vx = (Math.random() - 0.5) * 0.32;
+          this.vy = (Math.random() - 0.5) * 0.32;
+          this.baseOp = Math.random() * 0.38 + 0.18;
+          this.t = Math.random() * Math.PI * 2;
+          this.sp = Math.random() * 0.006 + 0.002;
+        };
+        this.init();
+        this.update = function() {
+          this.x += this.vx; this.y += this.vy; this.t += this.sp;
+          if (this.x < -8 || this.x > W+8 || this.y < -8 || this.y > H+8) this.init();
+        };
+        this.draw = function() {
+          var op = this.baseOp * (0.5 + 0.5 * Math.sin(this.t));
+          var grd = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r * 2.5);
+          grd.addColorStop(0, 'rgba(240,190,90,' + op + ')');
+          grd.addColorStop(0.5, 'rgba(210,155,60,' + (op*0.6) + ')');
+          grd.addColorStop(1, 'rgba(190,130,45,0)');
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r * 2.5, 0, Math.PI*2);
+          ctx.fillStyle = grd;
+          ctx.fill();
+        };
+      }
+
+      var orbs = [], sparks = [];
+      for (var i = 0; i < 18; i++) { var o = new Orb(); orbs.push(o); }
+      for (var j = 0; j < 65; j++) { var s = new Spark(); sparks.push(s); }
+
+      function loop() {
+        ctx.clearRect(0, 0, W, H);
+        orbs.forEach(function(o){ o.update(); o.draw(); });
+        sparks.forEach(function(s){ s.update(); s.draw(); });
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+  </script>
+</body>
+</html>
