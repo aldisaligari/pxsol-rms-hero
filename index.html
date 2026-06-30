@@ -23,10 +23,10 @@
     @keyframes shimmer  { 0%{left:-100%} 100%{left:200%} }
     @keyframes badgePulse{ 0%,100%{box-shadow:0 0 0 0 rgba(204,16,32,.4)} 50%{box-shadow:0 0 0 4px rgba(204,16,32,0)} }
     @keyframes blink    { 0%,100%{opacity:1} 50%{opacity:.15} }
-    @keyframes rmsFloatY   { 0%,100%{transform:translate(-50%,-50%) rotate(-1.5deg) translateY(0)} 33%{transform:translate(-50%,-50%) rotate(-.5deg) translateY(-11px)} 66%{transform:translate(-50%,-50%) rotate(-2.5deg) translateY(5px)} }
-    @keyframes rmsFloatMob { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-6px) rotate(-1deg)} }
-    @keyframes rmsPop      { 0%{transform:translate(-50%,-50%) rotate(-1.5deg) scale(1)} 35%{transform:translate(-50%,-50%) rotate(-1.5deg) scale(1.1)} 65%{transform:translate(-50%,-50%) rotate(-1.5deg) scale(.96)} 100%{transform:translate(-50%,-50%) rotate(-1.5deg) scale(1)} }
-    @keyframes rmsPopMob   { 0%{transform:translateY(0) rotate(-1deg) scale(1)} 35%{transform:translateY(0) rotate(-1deg) scale(1.1)} 65%{transform:translateY(0) rotate(-1deg) scale(.96)} 100%{transform:translateY(0) rotate(-1deg) scale(1)} }
+    @keyframes rmsFloatY   { 0%,100%{transform:translate(-50%,-50%) translateY(0)} 33%{transform:translate(-50%,-50%) translateY(-13px)} 66%{transform:translate(-50%,-50%) translateY(6px)} }
+    @keyframes rmsFloatMob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    @keyframes rmsPop      { 0%{transform:translate(-50%,-50%) scale(1)} 35%{transform:translate(-50%,-50%) scale(1.07)} 65%{transform:translate(-50%,-50%) scale(.97)} 100%{transform:translate(-50%,-50%) scale(1)} }
+    @keyframes rmsPopMob   { 0%{transform:translateY(0) scale(1)} 35%{transform:translateY(0) scale(1.1)} 65%{transform:translateY(0) scale(.96)} 100%{transform:translateY(0) scale(1)} }
     .au{animation:fadeUp    .75s cubic-bezier(.22,1,.36,1) both}
     .ar{animation:fadeRight .75s cubic-bezier(.22,1,.36,1) both}
     .d1{animation-delay:.10s}.d2{animation-delay:.22s}.d3{animation-delay:.36s}.d4{animation-delay:.52s}.d5{animation-delay:.68s}
@@ -102,20 +102,21 @@
     .col-left, .col-right { position:relative; z-index:1; }
     .h1-col { display:block; }
     .rms-float {
-      position:absolute; left:48%; top:46%;
+      position:absolute; left:48%; top:50%;
+      display:flex; flex-direction:column; align-items:center;
       font-family:'DM Serif Display',Georgia,serif;
-      font-size:clamp(76px,9.5vw,136px);
+      font-size:clamp(120px,16vw,200px);
       font-style:italic; font-weight:400;
-      color:rgba(15,15,15,0.065);
+      line-height:0.86;
+      color:rgba(15,15,15,0.052);
       pointer-events:auto; z-index:0;
       animation:rmsFloatY 7s ease-in-out infinite;
       user-select:none; cursor:pointer;
-      letter-spacing:-4px; line-height:1;
-      white-space:nowrap;
+      letter-spacing:-0.02em;
       transition:color .4s cubic-bezier(.22,1,.36,1);
       -webkit-font-smoothing:antialiased;
     }
-    .rms-float:hover { color:rgba(15,15,15,0.14); }
+    .rms-float:hover { color:rgba(15,15,15,0.11); }
 
     /* ── LEFT ── */
     .col-left { padding:72px 20px 64px 64px; display:flex; flex-direction:column; justify-content:space-between; }
@@ -255,13 +256,15 @@
       .rms-float {
         position: relative; left: auto; top: auto;
         transform: none;
+        flex-direction: row;
+        justify-content: center;
         animation: rmsFloatMob 7s ease-in-out infinite;
         font-size: 72px;
-        text-align: center;
         width: 100%;
-        display: block;
+        display: flex;
         margin: -4px 0 -8px;
         color: rgba(15,15,15,0.055);
+        gap: 0.05em;
       }
     }
     @media (max-width: 640px) {
@@ -296,7 +299,7 @@
       .t-item { border-right: none !important; padding-right: 0 !important; margin-right: 0 !important; text-align: center; }
       .t-num { justify-content: center; }
       /* RMS: más pequeño en mobile < 640 */
-      .rms-float { font-size: 56px; margin: 0; }
+      .rms-float { font-size: 56px; margin: 0; gap: 0.05em; }
 
       /* RIGHT: imágenes más compactas, SIN phone */
       .col-right { padding: 0 16px 36px; gap: 12px; }
@@ -419,7 +422,7 @@
     </div>
 
     <!-- Floating RMS — desktop: absolute en el gap; mobile: separador decorativo -->
-    <div class="rms-float" id="rms-float" aria-hidden="true">RMS</div>
+    <div class="rms-float" id="rms-float" aria-hidden="true"><span>R</span><span>M</span><span>S</span></div>
 
     <!-- RIGHT: fotos + mockups -->
     <div class="col-right">
@@ -606,7 +609,7 @@
     // ── Video mute safety
     document.querySelectorAll('video').forEach(v=>{ v.muted=true; v.volume=0; });
 
-    // ── PARTÍCULAS DE LUZ CÁLIDA
+    // ── PARTÍCULAS FRÍAS (fondo atmosférico)
     (function(){
       var canvas = document.createElement('canvas');
       canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
@@ -618,74 +621,90 @@
       resize();
       window.addEventListener('resize', resize, {passive:true});
 
-      // Orbe grande con glow suave
+      // Mouse parallax — suave
+      var mxRaw = 0, myRaw = 0, mxS = 0, myS = 0;
+      document.addEventListener('mousemove', function(e){ mxRaw = e.clientX; myRaw = e.clientY; }, {passive:true});
+
+      // Scroll parallax
+      var scrollY = 0;
+      window.addEventListener('scroll', function(){ scrollY = window.scrollY; }, {passive:true});
+
+      // Orbe grande — tono frío plateado/celeste
       function Orb() {
         this.init = function() {
           this.x = Math.random() * W;
           this.y = Math.random() * H;
-          this.r = Math.random() * 55 + 28;
-          this.vx = (Math.random() - 0.5) * 0.18;
-          this.vy = (Math.random() - 0.5) * 0.14;
-          this.baseOp = Math.random() * 0.13 + 0.06;
+          this.r = Math.random() * 60 + 32;
+          this.vx = (Math.random() - 0.5) * 0.14;
+          this.vy = (Math.random() - 0.5) * 0.11;
+          this.baseOp = Math.random() * 0.06 + 0.025; // más sutil
           this.t = Math.random() * Math.PI * 2;
-          this.sp = Math.random() * 0.003 + 0.001;
+          this.sp = Math.random() * 0.0025 + 0.001;
         };
         this.init();
         this.update = function() {
           this.x += this.vx; this.y += this.vy; this.t += this.sp;
           if (this.x < -this.r*2 || this.x > W+this.r*2 || this.y < -this.r*2 || this.y > H+this.r*2) this.init();
         };
-        this.draw = function() {
+        this.draw = function(ox, oy) {
           var op = this.baseOp * (0.6 + 0.4 * Math.sin(this.t));
-          var grd = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
-          grd.addColorStop(0, 'rgba(210,155,60,' + op + ')');
-          grd.addColorStop(0.4, 'rgba(200,140,50,' + (op*0.55) + ')');
-          grd.addColorStop(1, 'rgba(190,130,45,0)');
+          var grd = ctx.createRadialGradient(this.x+ox, this.y+oy, 0, this.x+ox, this.y+oy, this.r);
+          grd.addColorStop(0, 'rgba(180,198,224,' + op + ')');
+          grd.addColorStop(0.45, 'rgba(160,182,212,' + (op*0.5) + ')');
+          grd.addColorStop(1, 'rgba(140,168,200,0)');
           ctx.beginPath();
-          ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+          ctx.arc(this.x+ox, this.y+oy, this.r, 0, Math.PI*2);
           ctx.fillStyle = grd;
           ctx.fill();
         };
       }
 
-      // Chispa pequeña con micro-glow
+      // Chispa pequeña — plateado muy sutil
       function Spark() {
         this.init = function() {
           this.x = Math.random() * W;
           this.y = Math.random() * H;
-          this.r = Math.random() * 2.2 + 1.0;
-          this.vx = (Math.random() - 0.5) * 0.32;
-          this.vy = (Math.random() - 0.5) * 0.32;
-          this.baseOp = Math.random() * 0.38 + 0.18;
+          this.r = Math.random() * 1.8 + 0.8;
+          this.vx = (Math.random() - 0.5) * 0.28;
+          this.vy = (Math.random() - 0.5) * 0.28;
+          this.baseOp = Math.random() * 0.22 + 0.08; // más sutil que antes
           this.t = Math.random() * Math.PI * 2;
-          this.sp = Math.random() * 0.006 + 0.002;
+          this.sp = Math.random() * 0.005 + 0.002;
         };
         this.init();
         this.update = function() {
           this.x += this.vx; this.y += this.vy; this.t += this.sp;
           if (this.x < -8 || this.x > W+8 || this.y < -8 || this.y > H+8) this.init();
         };
-        this.draw = function() {
+        this.draw = function(ox, oy) {
           var op = this.baseOp * (0.5 + 0.5 * Math.sin(this.t));
-          var grd = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r * 2.5);
-          grd.addColorStop(0, 'rgba(240,190,90,' + op + ')');
-          grd.addColorStop(0.5, 'rgba(210,155,60,' + (op*0.6) + ')');
-          grd.addColorStop(1, 'rgba(190,130,45,0)');
+          var grd = ctx.createRadialGradient(this.x+ox, this.y+oy, 0, this.x+ox, this.y+oy, this.r * 2.8);
+          grd.addColorStop(0, 'rgba(210,220,235,' + op + ')');
+          grd.addColorStop(0.5, 'rgba(185,200,220,' + (op*0.5) + ')');
+          grd.addColorStop(1, 'rgba(160,180,205,0)');
           ctx.beginPath();
-          ctx.arc(this.x, this.y, this.r * 2.5, 0, Math.PI*2);
+          ctx.arc(this.x+ox, this.y+oy, this.r * 2.8, 0, Math.PI*2);
           ctx.fillStyle = grd;
           ctx.fill();
         };
       }
 
       var orbs = [], sparks = [];
-      for (var i = 0; i < 18; i++) { var o = new Orb(); orbs.push(o); }
-      for (var j = 0; j < 65; j++) { var s = new Spark(); sparks.push(s); }
+      for (var i = 0; i < 12; i++) { var o = new Orb(); orbs.push(o); }
+      for (var j = 0; j < 40; j++) { var s = new Spark(); sparks.push(s); }
 
       function loop() {
+        // Suavizado de mouse
+        mxS += (mxRaw - mxS) * 0.035;
+        myS += (myRaw - myS) * 0.035;
+
+        // Offset de parallax: mouse + scroll (capas distintas)
+        var offX = (mxS / (W||1) - 0.5) * 22;
+        var offY = (myS / (H||1) - 0.5) * 14 - scrollY * 0.18;
+
         ctx.clearRect(0, 0, W, H);
-        orbs.forEach(function(o){ o.update(); o.draw(); });
-        sparks.forEach(function(s){ s.update(); s.draw(); });
+        orbs.forEach(function(o){ o.update(); o.draw(offX, offY); });
+        sparks.forEach(function(s){ s.update(); s.draw(offX * 0.6, offY * 0.6); });
         requestAnimationFrame(loop);
       }
       loop();
